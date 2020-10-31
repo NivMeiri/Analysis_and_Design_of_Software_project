@@ -37,7 +37,12 @@ public class Product
     lineItems = new ArrayList<LineItem>();
   }
 
-  //------------------------
+    public Product(String aid, String aname){
+    id=aid;
+    name=aname;
+    }
+
+    //------------------------
   // INTERFACE
   //------------------------
 
