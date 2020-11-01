@@ -40,16 +40,10 @@ public class Account
     open = aOpen;
     closed = aClosed;
     balance = aBalance;
-    if (aCustomer == null || aCustomer.getAccount() != null)
-    {
-      throw new RuntimeException("Unable to create Account due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+
     customer = aCustomer;
     payments = new ArrayList<Payment>();
-    if (aShoppingCart == null || aShoppingCart.getAccount() != null)
-    {
-      throw new RuntimeException("Unable to create Account due to aShoppingCart. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+
     shoppingCart = aShoppingCart;
     orders = new ArrayList<Order>();
   }

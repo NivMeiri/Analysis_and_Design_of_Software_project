@@ -33,10 +33,7 @@ public class Customer
     Address = aAddress;
     phone = aPhone;
     email = aEmail;
-    if (aAccount == null || aAccount.getCustomer() != null)
-    {
-      throw new RuntimeException("Unable to create Customer due to aAccount. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+
     account = aAccount;
   }
 

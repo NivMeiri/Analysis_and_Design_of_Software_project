@@ -31,6 +31,8 @@ public class System1 {
         String YesOrNo = s.nextLine();
         System.out.println("Please enter your addres: ");
         Address newAddres = new Address("street",1,"city","state",32942);          /////TODO fix here///////
+        String myAddress=s.nextLine();
+        System.out.println(myAddress);
         System.out.println("Please enter your Phone Number: ");
         String pNumber = s.nextLine();
         System.out.println("Please enter your Email: ");
@@ -40,28 +42,39 @@ public class System1 {
         switch (YesOrNo){
 
             case "y":
-                 a1 = new PremiumAccount(ID,newAddres,false,new java.sql.Date(),null,
+                 a1 = new PremiumAccount(ID,"new addressi",false,new  Date(2020,10,1),null,
                         0,newCustomer,null);
                  newCustomer.SetAccount(a1);
+                 break;
             case "n":
-                 a1 = new Account(ID,newAddres,false,new java.sql.Date(),null,
+                 a1 = new Account(ID,"newAddres",false,new Date(2019,10,8),null,
                         0,newCustomer,null);
                 newCustomer.SetAccount(a1);
+                break;
         }
 
         WebUser myUser = new WebUser(ID,Pass,UserState.New,newCustomer);
-        ShoppingCart shop1 = new ShoppingCart(new java.sql.Date(),myUser);
+        ShoppingCart shop1 = new ShoppingCart(new Date(2020,9,9),myUser,a1);
         if (a1 != null) {
             a1.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
         }
+        System.out.println(a1 instanceof PremiumAccount);
+        System.out.println(a1 instanceof Account);
 
-
-
+        System.out.println(myUser.toString());
+        System.out.println(newCustomer.toString());
     }
-    public void Remove_Webuser(){
+    public void Remove_Webuser(String Login_id){
+        this.Webusers.get(Login_id).delete();
     }
-    public void Login(){
+    public void Login(String Login_id){
+        if(this.Webusers.get(Login_id)==null) {
+            System.out.println("The user is not exist!!");
+        }
+        Scanner s = new Scanner(System.in);
+        System.out.println("Please enter your Password");
+        String Pass = s.nextLine();
     }
     public void LogOut(){
     }

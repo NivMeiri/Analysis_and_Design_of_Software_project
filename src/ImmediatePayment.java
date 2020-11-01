@@ -6,7 +6,7 @@ import java.sql.Date;
 
 // line 45 "model.ump"
 // line 133 "model.ump"
-public class ImmeditePayment extends Payment
+public class ImmediatePayment extends Payment
 {
 
   //------------------------
@@ -20,7 +20,7 @@ public class ImmeditePayment extends Payment
   // CONSTRUCTOR
   //------------------------
 
-  public ImmeditePayment(String aId, Date aPaid, float aTotal, String aDetails, Account aAccount, Order aOrder, boolean aPhoneConfirmation)
+  public ImmediatePayment(String aId, Date aPaid, float aTotal, String aDetails, Account aAccount, Order aOrder, boolean aPhoneConfirmation)
   {
     super(aId, aPaid, aTotal, aDetails, aAccount, aOrder);
     phoneConfirmation = aPhoneConfirmation;
