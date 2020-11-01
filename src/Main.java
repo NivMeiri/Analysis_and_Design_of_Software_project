@@ -11,8 +11,9 @@ public class Main {
 
     public static void main(String[] args) {
         System1 s=new System1();
+        s.Add_WebUser("9999");
         //if(args[0]=="login"){s.login()};
-        System.out.println("Hello World!");
+        /*System.out.println("Hello World!");
         System.out.println("hey team");
         Supplier s=new Supplier("312","nim");
         Product p=new Product("111","CoffeMachine");
@@ -23,7 +24,7 @@ public class Main {
         System.out.println(p.getSupplier().getId());
         System.out.println(p.getId());
         System.out.println(o.toString());
-
+*/
         /*
         public void  Add(String Login_id){
 
