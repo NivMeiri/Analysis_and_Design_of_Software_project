@@ -4,7 +4,8 @@
 
 import java.sql.Date;
 
-// line 50 "model.ump"
+// line 51 "model.ump"
+// line 138 "model.ump"
 public class Payment
 {
 
@@ -19,18 +20,24 @@ public class Payment
   private String Details;
 
   //Payment Associations
+  private Account account;
   private Order order;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Payment(String aId, Date aPaid, float aTotal, String aDetails, Order aOrder)
+  public Payment(String aId, Date aPaid, float aTotal, String aDetails, Account aAccount, Order aOrder)
   {
     Id = aId;
     Paid = aPaid;
     Total = aTotal;
     Details = aDetails;
+    boolean didAddAccount = setAccount(aAccount);
+    if (!didAddAccount)
+    {
+      throw new RuntimeException("Unable to create payment due to account. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
     boolean didAddOrder = setOrder(aOrder);
     if (!didAddOrder)
     {
@@ -94,9 +101,33 @@ public class Payment
     return Details;
   }
   /* Code from template association_GetOne */
+  public Account getAccount()
+  {
+    return account;
+  }
+  /* Code from template association_GetOne */
   public Order getOrder()
   {
     return order;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setAccount(Account aAccount)
+  {
+    boolean wasSet = false;
+    if (aAccount == null)
+    {
+      return wasSet;
+    }
+
+    Account existingAccount = account;
+    account = aAccount;
+    if (existingAccount != null && !existingAccount.equals(aAccount))
+    {
+      existingAccount.removePayment(this);
+    }
+    account.addPayment(this);
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_SetOneToMany */
   public boolean setOrder(Order aOrder)
@@ -120,6 +151,12 @@ public class Payment
 
   public void delete()
   {
+    Account placeholderAccount = account;
+    this.account = null;
+    if(placeholderAccount != null)
+    {
+      placeholderAccount.removePayment(this);
+    }
     Order placeholderOrder = order;
     this.order = null;
     if(placeholderOrder != null)
@@ -136,6 +173,7 @@ public class Payment
             "Total" + ":" + getTotal()+ "," +
             "Details" + ":" + getDetails()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "Paid" + "=" + (getPaid() != null ? !getPaid().equals(this)  ? getPaid().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "account = "+(getAccount()!=null?Integer.toHexString(System.identityHashCode(getAccount())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null");
   }
 }

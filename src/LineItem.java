@@ -2,9 +2,9 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 
-import java.util.*;
 
-// line 77 "model.ump"
+// line 79 "model.ump"
+// line 157 "model.ump"
 public class LineItem
 {
 
@@ -17,7 +17,7 @@ public class LineItem
   private int price;
 
   //LineItem Associations
-  private List<ShoppingCart> shoppingCarts;
+  private ShoppingCart shoppingCart;
   private Order order;
   private Product product;
 
@@ -25,11 +25,15 @@ public class LineItem
   // CONSTRUCTOR
   //------------------------
 
-  public LineItem(int aQuantity, int aPrice, Order aOrder, Product aProduct)
+  public LineItem(int aQuantity, int aPrice, ShoppingCart aShoppingCart, Order aOrder, Product aProduct)
   {
     quantity = aQuantity;
     price = aPrice;
-    shoppingCarts = new ArrayList<ShoppingCart>();
+    boolean didAddShoppingCart = setShoppingCart(aShoppingCart);
+    if (!didAddShoppingCart)
+    {
+      throw new RuntimeException("Unable to create lineItem due to shoppingCart. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
     boolean didAddOrder = setOrder(aOrder);
     if (!didAddOrder)
     {
@@ -71,35 +75,10 @@ public class LineItem
   {
     return price;
   }
-  /* Code from template association_GetMany */
-  public ShoppingCart getShoppingCart(int index)
+  /* Code from template association_GetOne */
+  public ShoppingCart getShoppingCart()
   {
-    ShoppingCart aShoppingCart = shoppingCarts.get(index);
-    return aShoppingCart;
-  }
-
-  public List<ShoppingCart> getShoppingCarts()
-  {
-    List<ShoppingCart> newShoppingCarts = Collections.unmodifiableList(shoppingCarts);
-    return newShoppingCarts;
-  }
-
-  public int numberOfShoppingCarts()
-  {
-    int number = shoppingCarts.size();
-    return number;
-  }
-
-  public boolean hasShoppingCarts()
-  {
-    boolean has = shoppingCarts.size() > 0;
-    return has;
-  }
-
-  public int indexOfShoppingCart(ShoppingCart aShoppingCart)
-  {
-    int index = shoppingCarts.indexOf(aShoppingCart);
-    return index;
+    return shoppingCart;
   }
   /* Code from template association_GetOne */
   public Order getOrder()
@@ -111,87 +90,24 @@ public class LineItem
   {
     return product;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfShoppingCarts()
+  /* Code from template association_SetOneToMany */
+  public boolean setShoppingCart(ShoppingCart aShoppingCart)
   {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addShoppingCart(ShoppingCart aShoppingCart)
-  {
-    boolean wasAdded = false;
-    if (shoppingCarts.contains(aShoppingCart)) { return false; }
-    shoppingCarts.add(aShoppingCart);
-    if (aShoppingCart.indexOfLineItem(this) != -1)
+    boolean wasSet = false;
+    if (aShoppingCart == null)
     {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aShoppingCart.addLineItem(this);
-      if (!wasAdded)
-      {
-        shoppingCarts.remove(aShoppingCart);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeShoppingCart(ShoppingCart aShoppingCart)
-  {
-    boolean wasRemoved = false;
-    if (!shoppingCarts.contains(aShoppingCart))
-    {
-      return wasRemoved;
+      return wasSet;
     }
 
-    int oldIndex = shoppingCarts.indexOf(aShoppingCart);
-    shoppingCarts.remove(oldIndex);
-    if (aShoppingCart.indexOfLineItem(this) == -1)
+    ShoppingCart existingShoppingCart = shoppingCart;
+    shoppingCart = aShoppingCart;
+    if (existingShoppingCart != null && !existingShoppingCart.equals(aShoppingCart))
     {
-      wasRemoved = true;
+      existingShoppingCart.removeLineItem(this);
     }
-    else
-    {
-      wasRemoved = aShoppingCart.removeLineItem(this);
-      if (!wasRemoved)
-      {
-        shoppingCarts.add(oldIndex,aShoppingCart);
-      }
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addShoppingCartAt(ShoppingCart aShoppingCart, int index)
-  {  
-    boolean wasAdded = false;
-    if(addShoppingCart(aShoppingCart))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfShoppingCarts()) { index = numberOfShoppingCarts() - 1; }
-      shoppingCarts.remove(aShoppingCart);
-      shoppingCarts.add(index, aShoppingCart);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveShoppingCartAt(ShoppingCart aShoppingCart, int index)
-  {
-    boolean wasAdded = false;
-    if(shoppingCarts.contains(aShoppingCart))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfShoppingCarts()) { index = numberOfShoppingCarts() - 1; }
-      shoppingCarts.remove(aShoppingCart);
-      shoppingCarts.add(index, aShoppingCart);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addShoppingCartAt(aShoppingCart, index);
-    }
-    return wasAdded;
+    shoppingCart.addLineItem(this);
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_SetOneToMany */
   public boolean setOrder(Order aOrder)
@@ -234,11 +150,11 @@ public class LineItem
 
   public void delete()
   {
-    ArrayList<ShoppingCart> copyOfShoppingCarts = new ArrayList<ShoppingCart>(shoppingCarts);
-    shoppingCarts.clear();
-    for(ShoppingCart aShoppingCart : copyOfShoppingCarts)
+    ShoppingCart placeholderShoppingCart = shoppingCart;
+    this.shoppingCart = null;
+    if(placeholderShoppingCart != null)
     {
-      aShoppingCart.removeLineItem(this);
+      placeholderShoppingCart.removeLineItem(this);
     }
     Order placeholderOrder = order;
     this.order = null;
@@ -260,6 +176,7 @@ public class LineItem
     return super.toString() + "["+
             "quantity" + ":" + getQuantity()+ "," +
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "shoppingCart = "+(getShoppingCart()!=null?Integer.toHexString(System.identityHashCode(getShoppingCart())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "product = "+(getProduct()!=null?Integer.toHexString(System.identityHashCode(getProduct())):"null");
   }

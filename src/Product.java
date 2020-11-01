@@ -4,7 +4,8 @@
 
 import java.util.*;
 
-// line 86 "model.ump"
+// line 88 "model.ump"
+// line 164 "model.ump"
 public class Product
 {
 
@@ -37,12 +38,7 @@ public class Product
     lineItems = new ArrayList<LineItem>();
   }
 
-    public Product(String aid, String aname){
-    id=aid;
-    name=aname;
-    }
-
-    //------------------------
+  //------------------------
   // INTERFACE
   //------------------------
 
@@ -159,9 +155,9 @@ public class Product
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public LineItem addLineItem(int aQuantity, int aPrice, Order aOrder)
+  public LineItem addLineItem(int aQuantity, int aPrice, ShoppingCart aShoppingCart, Order aOrder)
   {
-    return new LineItem(aQuantity, aPrice, aOrder, this);
+    return new LineItem(aQuantity, aPrice, aShoppingCart, aOrder, this);
   }
 
   public boolean addLineItem(LineItem aLineItem)

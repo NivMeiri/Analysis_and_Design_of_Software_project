@@ -4,8 +4,9 @@
 
 import java.sql.Date;
 
-// line 44 "model.ump"
-public class ImmediatePayment extends Payment
+// line 45 "model.ump"
+// line 133 "model.ump"
+public class ImmeditePayment extends Payment
 {
 
   //------------------------
@@ -19,17 +20,13 @@ public class ImmediatePayment extends Payment
   // CONSTRUCTOR
   //------------------------
 
-  public ImmediatePayment(String aId, Date aPaid, float aTotal, String aDetails, Order aOrder, boolean aPhoneConfirmation)
+  public ImmeditePayment(String aId, Date aPaid, float aTotal, String aDetails, Account aAccount, Order aOrder, boolean aPhoneConfirmation)
   {
-    super(aId, aPaid, aTotal, aDetails, aOrder);
+    super(aId, aPaid, aTotal, aDetails, aAccount, aOrder);
     phoneConfirmation = aPhoneConfirmation;
   }
 
-    public ImmediatePayment(String aId, Date aPaid, float aTotal, String aDetails, Order aOrder) {
-        super(aId, aPaid, aTotal, aDetails, aOrder);
-    }
-
-    //------------------------
+  //------------------------
   // INTERFACE
   //------------------------
 

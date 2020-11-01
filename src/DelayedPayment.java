@@ -4,7 +4,8 @@
 
 import java.sql.Date;
 
-// line 38 "model.ump"
+// line 39 "model.ump"
+// line 128 "model.ump"
 public class DelayedPayment extends Payment
 {
 
@@ -19,9 +20,9 @@ public class DelayedPayment extends Payment
   // CONSTRUCTOR
   //------------------------
 
-  public DelayedPayment(String aId, Date aPaid, float aTotal, String aDetails, Order aOrder, Date aPaymentDate)
+  public DelayedPayment(String aId, Date aPaid, float aTotal, String aDetails, Account aAccount, Order aOrder, Date aPaymentDate)
   {
-    super(aId, aPaid, aTotal, aDetails, aOrder);
+    super(aId, aPaid, aTotal, aDetails, aAccount, aOrder);
     PaymentDate = aPaymentDate;
   }
 

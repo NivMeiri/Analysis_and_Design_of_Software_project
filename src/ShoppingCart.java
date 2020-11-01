@@ -5,7 +5,8 @@
 import java.sql.Date;
 import java.util.*;
 
-// line 59 "model.ump"
+// line 60 "model.ump"
+// line 143 "model.ump"
 public class ShoppingCart
 {
 
@@ -142,48 +143,38 @@ public class ShoppingCart
   {
     return 0;
   }
-  /* Code from template association_AddManyToManyMethod */
+  /* Code from template association_AddManyToOne */
+  public LineItem addLineItem(int aQuantity, int aPrice, Order aOrder, Product aProduct)
+  {
+    return new LineItem(aQuantity, aPrice, this, aOrder, aProduct);
+  }
+
   public boolean addLineItem(LineItem aLineItem)
   {
     boolean wasAdded = false;
     if (lineItems.contains(aLineItem)) { return false; }
-    lineItems.add(aLineItem);
-    if (aLineItem.indexOfShoppingCart(this) != -1)
+    ShoppingCart existingShoppingCart = aLineItem.getShoppingCart();
+    boolean isNewShoppingCart = existingShoppingCart != null && !this.equals(existingShoppingCart);
+    if (isNewShoppingCart)
     {
-      wasAdded = true;
+      aLineItem.setShoppingCart(this);
     }
     else
     {
-      wasAdded = aLineItem.addShoppingCart(this);
-      if (!wasAdded)
-      {
-        lineItems.remove(aLineItem);
-      }
+      lineItems.add(aLineItem);
     }
+    wasAdded = true;
     return wasAdded;
   }
-  /* Code from template association_RemoveMany */
+
   public boolean removeLineItem(LineItem aLineItem)
   {
     boolean wasRemoved = false;
-    if (!lineItems.contains(aLineItem))
+    //Unable to remove aLineItem, as it must always have a shoppingCart
+    if (!this.equals(aLineItem.getShoppingCart()))
     {
-      return wasRemoved;
-    }
-
-    int oldIndex = lineItems.indexOf(aLineItem);
-    lineItems.remove(oldIndex);
-    if (aLineItem.indexOfShoppingCart(this) == -1)
-    {
+      lineItems.remove(aLineItem);
       wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aLineItem.removeShoppingCart(this);
-      if (!wasRemoved)
-      {
-        lineItems.add(oldIndex,aLineItem);
-      }
     }
     return wasRemoved;
   }
@@ -234,11 +225,10 @@ public class ShoppingCart
     {
       existingAccount.delete();
     }
-    ArrayList<LineItem> copyOfLineItems = new ArrayList<LineItem>(lineItems);
-    lineItems.clear();
-    for(LineItem aLineItem : copyOfLineItems)
+    for(int i=lineItems.size(); i > 0; i--)
     {
-      aLineItem.removeShoppingCart(this);
+      LineItem aLineItem = lineItems.get(i - 1);
+      aLineItem.delete();
     }
   }
 

@@ -3,13 +3,15 @@
 
 
 import java.sql.Date;
+
 enum UserState {
-    New,
-    Active,
-    Blocked,
-    Banned
+  New,
+  Active,
+  Blocked,
+  Banned
 }
 // line 2 "model.ump"
+// line 104 "model.ump"
 public class WebUser
 {
 

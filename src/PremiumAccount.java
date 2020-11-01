@@ -6,6 +6,7 @@ import java.util.*;
 import java.sql.Date;
 
 // line 18 "model.ump"
+// line 115 "model.ump"
 public class PremiumAccount extends Account
 {
 

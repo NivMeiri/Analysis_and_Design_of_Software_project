@@ -3,9 +3,7 @@
 
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 enum OrderStatus {
   New,
   Hold,
@@ -13,7 +11,8 @@ enum OrderStatus {
   Delivered,
   Closed
 }
-// line 66 "model.ump"
+// line 67 "model.ump"
+// line 150 "model.ump"
 public class Order
 {
 
@@ -31,13 +30,14 @@ public class Order
 
   //Order Associations
   private List<Payment> payments;
+  private Account account;
   private List<LineItem> lineItems;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Order(String aNumber, Date aOrederd, Date aShipped, Address aShip_to, OrderStatus aStatus, float aTotal)
+  public Order(String aNumber, Date aOrederd, Date aShipped, Address aShip_to, OrderStatus aStatus, float aTotal, Account aAccount)
   {
     number = aNumber;
     orederd = aOrederd;
@@ -46,6 +46,11 @@ public class Order
     Status = aStatus;
     total = aTotal;
     payments = new ArrayList<Payment>();
+    boolean didAddAccount = setAccount(aAccount);
+    if (!didAddAccount)
+    {
+      throw new RuntimeException("Unable to create order due to account. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
     lineItems = new ArrayList<LineItem>();
   }
 
@@ -160,6 +165,11 @@ public class Order
     int index = payments.indexOf(aPayment);
     return index;
   }
+  /* Code from template association_GetOne */
+  public Account getAccount()
+  {
+    return account;
+  }
   /* Code from template association_GetMany */
   public LineItem getLineItem(int index)
   {
@@ -196,9 +206,9 @@ public class Order
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Payment addPayment(String aId, Date aPaid, float aTotal, String aDetails)
+  public Payment addPayment(String aId, Date aPaid, float aTotal, String aDetails, Account aAccount)
   {
-    return new Payment(aId, aPaid, aTotal, aDetails, this);
+    return new Payment(aId, aPaid, aTotal, aDetails, aAccount, this);
   }
 
   public boolean addPayment(Payment aPayment)
@@ -262,15 +272,34 @@ public class Order
     }
     return wasAdded;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setAccount(Account aAccount)
+  {
+    boolean wasSet = false;
+    if (aAccount == null)
+    {
+      return wasSet;
+    }
+
+    Account existingAccount = account;
+    account = aAccount;
+    if (existingAccount != null && !existingAccount.equals(aAccount))
+    {
+      existingAccount.removeOrder(this);
+    }
+    account.addOrder(this);
+    wasSet = true;
+    return wasSet;
+  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfLineItems()
   {
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public LineItem addLineItem(int aQuantity, int aPrice, Product aProduct)
+  public LineItem addLineItem(int aQuantity, int aPrice, ShoppingCart aShoppingCart, Product aProduct)
   {
-    return new LineItem(aQuantity, aPrice, this, aProduct);
+    return new LineItem(aQuantity, aPrice, aShoppingCart, this, aProduct);
   }
 
   public boolean addLineItem(LineItem aLineItem)
@@ -342,6 +371,12 @@ public class Order
       Payment aPayment = payments.get(i - 1);
       aPayment.delete();
     }
+    Account placeholderAccount = account;
+    this.account = null;
+    if(placeholderAccount != null)
+    {
+      placeholderAccount.removeOrder(this);
+    }
     for(int i=lineItems.size(); i > 0; i--)
     {
       LineItem aLineItem = lineItems.get(i - 1);
@@ -358,6 +393,7 @@ public class Order
             "  " + "orederd" + "=" + (getOrederd() != null ? !getOrederd().equals(this)  ? getOrederd().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "shipped" + "=" + (getShipped() != null ? !getShipped().equals(this)  ? getShipped().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "ship_to" + "=" + (getShip_to() != null ? !getShip_to().equals(this)  ? getShip_to().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "Status" + "=" + (getStatus() != null ? !getStatus().equals(this)  ? getStatus().toString().replaceAll("  ","    ") : "this" : "null");
+            "  " + "Status" + "=" + (getStatus() != null ? !getStatus().equals(this)  ? getStatus().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "account = "+(getAccount()!=null?Integer.toHexString(System.identityHashCode(getAccount())):"null");
   }
 }

@@ -3,8 +3,10 @@
 
 
 import java.sql.Date;
+import java.util.*;
 
 // line 24 "model.ump"
+// line 121 "model.ump"
 public class Account
 {
 
@@ -22,7 +24,9 @@ public class Account
 
   //Account Associations
   private Customer customer;
+  private List<Payment> payments;
   private ShoppingCart shoppingCart;
+  private List<Order> orders;
 
   //------------------------
   // CONSTRUCTOR
@@ -41,11 +45,13 @@ public class Account
       throw new RuntimeException("Unable to create Account due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     customer = aCustomer;
+    payments = new ArrayList<Payment>();
     if (aShoppingCart == null || aShoppingCart.getAccount() != null)
     {
       throw new RuntimeException("Unable to create Account due to aShoppingCart. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     shoppingCart = aShoppingCart;
+    orders = new ArrayList<Order>();
   }
 
   public Account(String aID, String aBilling_Address, boolean aIs_closed, Date aOpen, Date aClosed, int aBalance, String aIdForCustomer, Address aAddressForCustomer, String aPhoneForCustomer, String aEmailForCustomer, Date aCretaedForShoppingCart, WebUser aWebUserForShoppingCart)
@@ -57,7 +63,9 @@ public class Account
     closed = aClosed;
     balance = aBalance;
     customer = new Customer(aIdForCustomer, aAddressForCustomer, aPhoneForCustomer, aEmailForCustomer, this);
+    payments = new ArrayList<Payment>();
     shoppingCart = new ShoppingCart(aCretaedForShoppingCart, aWebUserForShoppingCart, this);
+    orders = new ArrayList<Order>();
   }
 
   //------------------------
@@ -146,10 +154,214 @@ public class Account
   {
     return customer;
   }
+  /* Code from template association_GetMany */
+  public Payment getPayment(int index)
+  {
+    Payment aPayment = payments.get(index);
+    return aPayment;
+  }
+
+  public List<Payment> getPayments()
+  {
+    List<Payment> newPayments = Collections.unmodifiableList(payments);
+    return newPayments;
+  }
+
+  public int numberOfPayments()
+  {
+    int number = payments.size();
+    return number;
+  }
+
+  public boolean hasPayments()
+  {
+    boolean has = payments.size() > 0;
+    return has;
+  }
+
+  public int indexOfPayment(Payment aPayment)
+  {
+    int index = payments.indexOf(aPayment);
+    return index;
+  }
   /* Code from template association_GetOne */
   public ShoppingCart getShoppingCart()
   {
     return shoppingCart;
+  }
+  /* Code from template association_GetMany */
+  public Order getOrder(int index)
+  {
+    Order aOrder = orders.get(index);
+    return aOrder;
+  }
+
+  public List<Order> getOrders()
+  {
+    List<Order> newOrders = Collections.unmodifiableList(orders);
+    return newOrders;
+  }
+
+  public int numberOfOrders()
+  {
+    int number = orders.size();
+    return number;
+  }
+
+  public boolean hasOrders()
+  {
+    boolean has = orders.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrder(Order aOrder)
+  {
+    int index = orders.indexOf(aOrder);
+    return index;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfPayments()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Payment addPayment(String aId, Date aPaid, float aTotal, String aDetails, Order aOrder)
+  {
+    return new Payment(aId, aPaid, aTotal, aDetails, this, aOrder);
+  }
+
+  public boolean addPayment(Payment aPayment)
+  {
+    boolean wasAdded = false;
+    if (payments.contains(aPayment)) { return false; }
+    Account existingAccount = aPayment.getAccount();
+    boolean isNewAccount = existingAccount != null && !this.equals(existingAccount);
+    if (isNewAccount)
+    {
+      aPayment.setAccount(this);
+    }
+    else
+    {
+      payments.add(aPayment);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removePayment(Payment aPayment)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aPayment, as it must always have a account
+    if (!this.equals(aPayment.getAccount()))
+    {
+      payments.remove(aPayment);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addPaymentAt(Payment aPayment, int index)
+  {  
+    boolean wasAdded = false;
+    if(addPayment(aPayment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfPayments()) { index = numberOfPayments() - 1; }
+      payments.remove(aPayment);
+      payments.add(index, aPayment);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMovePaymentAt(Payment aPayment, int index)
+  {
+    boolean wasAdded = false;
+    if(payments.contains(aPayment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfPayments()) { index = numberOfPayments() - 1; }
+      payments.remove(aPayment);
+      payments.add(index, aPayment);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addPaymentAt(aPayment, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrders()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Order addOrder(String aNumber, Date aOrederd, Date aShipped, Address aShip_to, OrderStatus aStatus, float aTotal)
+  {
+    return new Order(aNumber, aOrederd, aShipped, aShip_to, aStatus, aTotal, this);
+  }
+
+  public boolean addOrder(Order aOrder)
+  {
+    boolean wasAdded = false;
+    if (orders.contains(aOrder)) { return false; }
+    Account existingAccount = aOrder.getAccount();
+    boolean isNewAccount = existingAccount != null && !this.equals(existingAccount);
+    if (isNewAccount)
+    {
+      aOrder.setAccount(this);
+    }
+    else
+    {
+      orders.add(aOrder);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOrder(Order aOrder)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOrder, as it must always have a account
+    if (!this.equals(aOrder.getAccount()))
+    {
+      orders.remove(aOrder);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOrderAt(Order aOrder, int index)
+  {  
+    boolean wasAdded = false;
+    if(addOrder(aOrder))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrders()) { index = numberOfOrders() - 1; }
+      orders.remove(aOrder);
+      orders.add(index, aOrder);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOrderAt(Order aOrder, int index)
+  {
+    boolean wasAdded = false;
+    if(orders.contains(aOrder))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrders()) { index = numberOfOrders() - 1; }
+      orders.remove(aOrder);
+      orders.add(index, aOrder);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addOrderAt(aOrder, index);
+    }
+    return wasAdded;
   }
 
   public void delete()
@@ -160,12 +372,24 @@ public class Account
     {
       existingCustomer.delete();
     }
+    for(int i=payments.size(); i > 0; i--)
+    {
+      Payment aPayment = payments.get(i - 1);
+      aPayment.delete();
+    }
     ShoppingCart existingShoppingCart = shoppingCart;
     shoppingCart = null;
     if (existingShoppingCart != null)
     {
       existingShoppingCart.delete();
     }
+    while (orders.size() > 0)
+    {
+      Order aOrder = orders.get(orders.size() - 1);
+      aOrder.delete();
+      orders.remove(aOrder);
+    }
+    
   }
 
 
