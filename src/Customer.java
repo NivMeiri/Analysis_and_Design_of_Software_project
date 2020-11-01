@@ -52,7 +52,12 @@ public class Customer
   //------------------------
   // INTERFACE
   //------------------------
+  public void SetAccount(Account myAccount){
+    if(myAccount!=null){
+      this.account=myAccount;
+    }
 
+  }
   public boolean setId(String aId)
   {
     boolean wasSet = false;

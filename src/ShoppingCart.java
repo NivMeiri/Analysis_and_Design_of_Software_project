@@ -26,7 +26,7 @@ public class ShoppingCart
   // CONSTRUCTOR
   //------------------------
 
-  public ShoppingCart(Date aCretaed, WebUser aWebUser, Account aAccount)
+  public ShoppingCart(Date aCretaed, WebUser aWebUser, Account account)
   {
     cretaed = aCretaed;
     boolean didAddWebUser = setWebUser(aWebUser);
@@ -34,14 +34,18 @@ public class ShoppingCart
     {
       throw new RuntimeException("Unable to create shoppingCart due to webUser. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    if (aAccount == null || aAccount.getShoppingCart() != null)
-    {
-      throw new RuntimeException("Unable to create ShoppingCart due to aAccount. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if(account != null){
+      this.account = account;
     }
-    account = aAccount;
+
     lineItems = new ArrayList<LineItem>();
   }
 
+  public void SetAccount(Account a){
+    if(a!=null) {
+      this.account = a;
+    }
+  }
   public ShoppingCart(Date aCretaed, WebUser aWebUser, String aIDForAccount, String aBilling_AddressForAccount, boolean aIs_closedForAccount, Date aOpenForAccount, Date aClosedForAccount, int aBalanceForAccount, Customer aCustomerForAccount)
   {
     cretaed = aCretaed;

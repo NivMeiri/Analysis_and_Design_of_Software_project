@@ -104,6 +104,10 @@ public class Account
     return wasSet;
   }
 
+  public void setShoppingCart(ShoppingCart s){
+    this.shoppingCart = s;
+  }
+
   public boolean setClosed(Date aClosed)
   {
     boolean wasSet = false;
