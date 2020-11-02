@@ -111,6 +111,10 @@ public class System1 {
                 System.out.println("Please enter valid number!");
             }
         }
+
+    }
+    public void Check_Func(){
+        System.out.println("Working?");
     }
     public void Display_Order(){
     }
