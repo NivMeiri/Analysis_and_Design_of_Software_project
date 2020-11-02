@@ -235,6 +235,11 @@ public class ShoppingCart
       aLineItem.delete();
     }
   }
+  public void printProducts(){
+    for(int i=0;i<this.lineItems.size();i++){
+      System.out.println(i+")"+lineItems.get(i).getProduct().getName()+":"+lineItems.get(i).getQuantity());
+    }
+  }
 
 
   public String toString()

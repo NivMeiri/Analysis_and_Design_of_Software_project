@@ -81,6 +81,36 @@ public class System1 {
     public void order(){
     }
     public void MakeOrder(){
+        Scanner sciny=new Scanner(System.in);
+        System.out.println("Who would you to order from?: ");
+        String name=sciny.nextLine();
+        WebUser MyWeb =this.Webusers.get(name);//using the hashmap
+        MyWeb.getShoppingCart().printProducts();
+        System.out.println("Would you like to order one of our products? (y/n)");
+        String ans = sciny.nextLine();
+        while (ans != "n"){
+            System.out.println("What product do you want to add to your Cart?: ");
+            String item = sciny.nextLine();
+            int index=-1;
+            String num;
+            int degel=1;
+            while (degel==1) {
+                for (int i = 0; i < MyWeb.getShoppingCart().getLineItems().size(); i++) {
+                    if (MyWeb.getShoppingCart().getLineItems().get(i).getProduct().getName().equals(item)) {
+                        index = i;
+                        degel=0;
+                        break; } }
+                if (index == -1)
+                    System.out.println("Please enter valid name!");
+            }
+            while (true) {
+                System.out.println("How many units do you want?");
+                num = sciny.nextLine();
+                if (MyWeb.getShoppingCart().getLineItems().get(index).getQuantity() >= Integer.parseInt(num))
+                    break;
+                System.out.println("Please enter valid number!");
+            }
+        }
     }
     public void Display_Order(){
     }
