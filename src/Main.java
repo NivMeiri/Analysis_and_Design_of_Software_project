@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         System1 s=new System1();
-        s.Add_WebUser("9999");
+        s.Add_WebUser("GuyGlo");///todo add args[2] input from cmd
         //if(args[0]=="login"){s.login()};
         /*System.out.println("Hello World!");
         System.out.println("hey team");

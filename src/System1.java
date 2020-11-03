@@ -14,6 +14,7 @@ public class System1 {
     public System1(){
         this.CurrentWebUser=null;
         this.LastOreder=null;
+        this.Webusers=new HashMap<String, WebUser>();
     }
     /*
     1) take input
@@ -24,44 +25,53 @@ public class System1 {
 
     */
     public void  Add_WebUser(String ID){
+        if (this.Webusers.containsKey(ID)){
+            System.out.println("This user already exists");
+            return;
+        }
         System.out.println("Enter your password: ");
         Scanner s = new Scanner(System.in);
         String Pass = s.nextLine();
-        System.out.println("Are you a Premium User? (y/n)");
-        String YesOrNo = s.nextLine();
-        System.out.println("Please enter your addres: ");
-        Address newAddres = new Address("street",1,"city","state",32942);          /////TODO fix here///////
-        String myAddress=s.nextLine();
-        System.out.println(myAddress);
+
+        System.out.println("Please enter your address: ");
+        String Address = s.nextLine();
+        Address newAddress = new Address(Address);          /////TODO fix here///////
         System.out.println("Please enter your Phone Number: ");
         String pNumber = s.nextLine();
         System.out.println("Please enter your Email: ");
         String eMail = s.nextLine();
-        Customer newCustomer = new Customer(ID,newAddres,pNumber,eMail,null);
-        Account a1=null;
-        switch (YesOrNo){
+        Customer newCustomer = new Customer(ID,newAddress,pNumber,eMail,null);
+        Account NewAccount=null;
 
+        System.out.println("Are you a Premium User? (y/n)");
+        String YesOrNo = s.nextLine();
+        switch (YesOrNo){
             case "y":
-                 a1 = new PremiumAccount(ID,"new addressi",false,new  Date(2020,10,1),null,
+                 NewAccount = new PremiumAccount(ID,"new addressi",false,new  Date(2020,10,1),null,
                         0,newCustomer,null);
-                 newCustomer.SetAccount(a1);
+                 newCustomer.SetAccount(NewAccount);
                  break;
             case "n":
-                 a1 = new Account(ID,"newAddres",false,new Date(2019,10,8),null,
+                 NewAccount = new Account(ID,"newAddres",false,new Date(2019,10,8),null,
                         0,newCustomer,null);
-                newCustomer.SetAccount(a1);
+                newCustomer.SetAccount(NewAccount);
                 break;
+
+            default:
+                System.out.println("Are you a Premium User? (y/n)");
+                String YesOrNo = s.nextLine();
+
+
         }
 
         WebUser myUser = new WebUser(ID,Pass,UserState.New,newCustomer);
-        ShoppingCart shop1 = new ShoppingCart(new Date(2020,9,9),myUser,a1);
-        if (a1 != null) {
-            a1.setShoppingCart(shop1);
+        ShoppingCart shop1 = new ShoppingCart(new Date(2020,9,9),myUser,NewAccount);
+        if (NewAccount != null) {
+            NewAccount.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
         }
-        System.out.println(a1 instanceof PremiumAccount);
-        System.out.println(a1 instanceof Account);
-
+        System.out.println(NewAccount instanceof PremiumAccount);
+        System.out.println(NewAccount instanceof Account);
         System.out.println(myUser.toString());
         System.out.println(newCustomer.toString());
     }
@@ -73,9 +83,9 @@ public class System1 {
             System.out.println("The user is not exist!!");
         }
         if(this.CurrentWebUser!=null)
-        Scanner s = new Scanner(System.in);
+            //Scanner s = new Scanner(System.in);
         System.out.println("Please enter your Password");
-        String Pass = s.nextLine();
+       // String Pass = s.nextLine();
     }
     public void LogOut(){
     }
