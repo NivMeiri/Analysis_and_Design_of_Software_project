@@ -343,7 +343,6 @@ public class Account
     }
     return wasAdded;
   }
-
   public boolean addOrMoveOrderAt(Order aOrder, int index)
   {
     boolean wasAdded = false;
@@ -387,10 +386,7 @@ public class Account
       aOrder.delete();
       orders.remove(aOrder);
     }
-    
   }
-
-
   public String toString()
   {
     return super.toString() + "["+

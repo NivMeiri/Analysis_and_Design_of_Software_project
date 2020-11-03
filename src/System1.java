@@ -72,6 +72,7 @@ public class System1 {
         if(this.Webusers.get(Login_id)==null) {
             System.out.println("The user is not exist!!");
         }
+        if(this.CurrentWebUser!=null)
         Scanner s = new Scanner(System.in);
         System.out.println("Please enter your Password");
         String Pass = s.nextLine();
