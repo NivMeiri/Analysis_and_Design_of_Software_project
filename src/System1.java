@@ -116,8 +116,12 @@ public class System1 {
     public void Check_Func(){
         System.out.println("Working?");
     }
+<<<<<<< HEAD
     public void Display_Order(){
     }
+=======
+   public void Niv_Branch(){};
+>>>>>>> Niv's-Branch--System1
     public void Link_Product(){}
     public void AddProduct(){}
     public void Delete_Product(){}
