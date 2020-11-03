@@ -116,7 +116,7 @@ public class System1 {
     public void Check_Func(){
         System.out.println("Working?");
     }
-   
+   public void Niv_Branch(){};
     public void Link_Product(){}
     public void AddProduct(){}
     public void Delete_Product(){}
