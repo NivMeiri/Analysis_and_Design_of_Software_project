@@ -54,6 +54,7 @@ public class Order
     lineItems = new ArrayList<LineItem>();
   }
 
+
   //------------------------
   // INTERFACE
   //------------------------
