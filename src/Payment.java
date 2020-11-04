@@ -149,6 +149,10 @@ public class Payment
     return wasSet;
   }
 
+  public void make_payment(){
+    this.account.setBalance(this.account.getBalance()+this.Total);
+    this.order.getAccount().setBalance(this.getOrder().getAccount().getBalance()-this.Total);
+  }
   public void delete()
   {
     Account placeholderAccount = account;

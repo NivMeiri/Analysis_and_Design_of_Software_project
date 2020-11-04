@@ -10,6 +10,7 @@ public class System1 {
     private WebUser CurrentWebUser=null;
     private List<Order> Oreders;
     private Order LastOreder=null;
+    private int OrderNum=0;
     private List<Product>  Pruducts;
     public System1(){
         this.CurrentWebUser=null;
@@ -81,43 +82,72 @@ public class System1 {
     public void order(){
     }
     public void MakeOrder(){
+        Order myOrder=new Order(String.valueOf(OrderNum),new Date(2000,10,18),null,this.CurrentWebUser.getCustomer().getAddress(),OrderStatus.New,0,this.CurrentWebUser.getCustomer().getAccount());
+        OrderNum++;
         Scanner sciny=new Scanner(System.in);
-        System.out.println("Who would you to order from?: ");
+        /// TODO CHECK IF THE WEBUSER EXIST ///
+        System.out.println("Who would you like to order from?: ");
         String name=sciny.nextLine();
         WebUser MyWeb =this.Webusers.get(name);//using the hashmap
         MyWeb.getShoppingCart().printProducts();
+        /// TODO CHECK IF THERE IS A PRODUCTS ///
         System.out.println("Would you like to order one of our products? (y/n)");
         String ans = sciny.nextLine();
-        while (ans != "n"){
+        while (ans == "y"){
             System.out.println("What product do you want to add to your Cart?: ");
             String item = sciny.nextLine();
-            int index=-1;
-            String num;
-            int degel=1;
-            while (degel==1) {
+            LineItem UserItem=null;
+            int num;
+            while (UserItem==null) {
                 for (int i = 0; i < MyWeb.getShoppingCart().getLineItems().size(); i++) {
                     if (MyWeb.getShoppingCart().getLineItems().get(i).getProduct().getName().equals(item)) {
-                        index = i;
-                        degel=0;
+                        UserItem=MyWeb.getShoppingCart().getLineItems().get(i);
                         break; } }
-                if (index == -1)
+                if (UserItem==null)
                     System.out.println("Please enter valid name!");
             }
             while (true) {
                 System.out.println("How many units do you want?");
-                num = sciny.nextLine();
-                if (MyWeb.getShoppingCart().getLineItems().get(index).getQuantity() >= Integer.parseInt(num))
-                    break;
-                System.out.println("Please enter valid number!");
+                num = Integer.parseInt(sciny.nextLine());
+                if (UserItem.getQuantity() >= num) {
+                    if (myOrder.getTotal()+(UserItem.getPrice()*num)<this.CurrentWebUser.getCustomer().getAccount().getBalance())
+                        break;
+                    System.out.println("You don't have enough money, try ordering less");
+                }
+                else {
+                    System.out.println("Please enter valid number!");
+                }
             }
+            LineItem myItem=new LineItem(num,UserItem.getPrice(),this.CurrentWebUser.getShoppingCart(),myOrder,UserItem.getProduct());
+            UserItem.setQuantity(UserItem.getQuantity()-num);
+            myOrder.addLineItem(myItem);
+            myOrder.setTotal(myOrder.getTotal()+myItem.getPrice()*num);
+            this.CurrentWebUser.getShoppingCart().addLineItem(myItem);
+            System.out.println("Would you like to order something else? y/n");
+            ans=sciny.nextLine();
         }
-
+        System.out.println("Do you want to pay now? y/n");
+        ans=sciny.nextLine();
+        Payment myPayment;
+        switch (ans) {
+            case "y":
+                myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), Date, myOrder.getTotal(), "", MyWeb, myOrder);
+                myPayment.make_payment();
+                myOrder.addPayment(myPayment);
+                break;
+            case "n":
+                System.out.println("When do you want to pay?");
+                String date=sciny.nextLine();
+                myPayment=new DelayedPayment(this.CurrentWebUser.getLogin_id(), date, myOrder.getTotal(), "", MyWeb, myOrder);
+                myOrder.addPayment(myPayment);
+                break;
+            default:
+        }
     }
+    
     public void Check_Func(){
-        System.out.println("Working?");
-    }
-    public void Display_Order(){
-    }
+        System.out.println("Working?"); }
+    public void Display_Order(){ }
     public void Link_Product(){}
     public void AddProduct(){}
     public void Delete_Product(){}

@@ -20,7 +20,7 @@ public class Account
   private boolean is_closed;
   private Date open;
   private Date closed;
-  private int balance;
+  private float balance;
 
   //Account Associations
   private Customer customer;
@@ -32,7 +32,7 @@ public class Account
   // CONSTRUCTOR
   //------------------------
 
-  public Account(String aID, String aBilling_Address, boolean aIs_closed, Date aOpen, Date aClosed, int aBalance, Customer aCustomer, ShoppingCart aShoppingCart)
+  public Account(String aID, String aBilling_Address, boolean aIs_closed, Date aOpen, Date aClosed, float aBalance, Customer aCustomer, ShoppingCart aShoppingCart)
   {
     ID = aID;
     Billing_Address = aBilling_Address;
@@ -48,7 +48,7 @@ public class Account
     orders = new ArrayList<Order>();
   }
 
-  public Account(String aID, String aBilling_Address, boolean aIs_closed, Date aOpen, Date aClosed, int aBalance, String aIdForCustomer, Address aAddressForCustomer, String aPhoneForCustomer, String aEmailForCustomer, Date aCretaedForShoppingCart, WebUser aWebUserForShoppingCart)
+  public Account(String aID, String aBilling_Address, boolean aIs_closed, Date aOpen, Date aClosed, float aBalance, String aIdForCustomer, Address aAddressForCustomer, String aPhoneForCustomer, String aEmailForCustomer, Date aCretaedForShoppingCart, WebUser aWebUserForShoppingCart)
   {
     ID = aID;
     Billing_Address = aBilling_Address;
@@ -110,7 +110,7 @@ public class Account
     return wasSet;
   }
 
-  public boolean setBalance(int aBalance)
+  public boolean setBalance(float aBalance)
   {
     boolean wasSet = false;
     balance = aBalance;
@@ -143,7 +143,7 @@ public class Account
     return closed;
   }
 
-  public int getBalance()
+  public float getBalance()
   {
     return balance;
   }
