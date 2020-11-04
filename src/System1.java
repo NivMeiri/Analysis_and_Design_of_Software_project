@@ -4,20 +4,27 @@ import java.util.*;
 import java.sql.Date;
 
 public class System1 {
-    private HashMap<String, WebUser> Webusers;
     private WebUser CurrentWebUser = null;
-    private List<Order> Oreders;
     private Order LastOreder = null;
     private int OrderNum = 0;
-    private Dictionary<String, Supplier> Suppliers;
-    private List<Product> Products;
-    private HashMap<Object, Integer> AllObjInSys;
     private int id = 0;
+
+    private HashMap<String, WebUser> Webusers;
+    private LinkedList<Order> Oreders;
+    private HashMap<String, Supplier> Suppliers;
+    private LinkedList<Product> Products;
+    private HashMap<Object, Integer> AllObjInSys;
+    private LinkedList<Account>Accounts;
+    private LinkedList<Customer>Customers;
+
 
     public System1(){
         this.CurrentWebUser=null;
         this.LastOreder=null;
         this.Webusers=new HashMap<String, WebUser>();
+        this.Suppliers= new HashMap<String, Supplier>();
+        this.Products=new LinkedList<Product>();
+        this.Oreders=new LinkedList<Order>();
     }
 
     /*
@@ -45,7 +52,6 @@ public class System1 {
         String eMail = s.nextLine();
         Customer newCustomer = new Customer(ID,newAddress,pNumber,eMail,null);
         Account NewAccount=null;
-
         System.out.println("Are you a Premium User? (y/n)");
         String YesOrNo = s.nextLine();
         switch (YesOrNo){
@@ -64,10 +70,10 @@ public class System1 {
                 System.out.println("Are you a Premium User? (y/n)");
                  YesOrNo = s.nextLine();
 
-
         }
 
         WebUser myUser = new WebUser(ID,Pass,UserState.New,newCustomer);
+        this.Webusers.put(ID,myUser);
         ShoppingCart shop1 = new ShoppingCart(new Date(2020,9,9),myUser,NewAccount);
         if (NewAccount != null) {
             NewAccount.setShoppingCart(shop1);
@@ -81,14 +87,22 @@ public class System1 {
     public void Remove_Webuser(String Login_id){
         this.Webusers.get(Login_id).delete();
     }
+
     public void Login(String Login_id){
         if(this.Webusers.get(Login_id)==null) {
             System.out.println("The user is not exist!!");
         }
-        if(this.CurrentWebUser!=null)
-            //Scanner s = new Scanner(System.in);
-        System.out.println("Please enter your Password");
-       // String Pass = s.nextLine();
+        else if(this.CurrentWebUser==null) {
+            Scanner s = new Scanner(System.in);
+            System.out.println("Please enter your Password");
+            String Pass = s.nextLine();
+            if (this.Webusers.get(Login_id).getPassword().equals(Pass)){
+                System.out.println("You've logged in successfully");
+                this.CurrentWebUser=this.Webusers.get(Login_id);
+            }
+        }
+        else
+            System.out.println("Someone is already logged in");
     }
 
     public void LogOut() {
@@ -107,9 +121,13 @@ public class System1 {
             System.out.println("Who would you like to order from?: ");
             String name = sciny.nextLine();
             MyWeb = this.Webusers.get(name);//using the hashmap
-            if (MyWeb != null)
+            if (MyWeb==null)
+                System.out.println("Please enter valid name");
+            else if (!(MyWeb.getCustomer().getAccount()  instanceof PremiumAccount))
+                System.out.println("You can only order from a premium account");
+            else
                 break;
-            System.out.println("Please enter valid name");
+
         }
         MyWeb.getShoppingCart().printProducts();
         /// TODO CHECK IF THERE IS A PRODUCTS ///
@@ -185,7 +203,17 @@ public class System1 {
 
 
 
-    public void Link_Product() {
+    public void Link_Product(String product) {
+           if (this.CurrentWebUser.getCustomer().getAccount() instanceof PremiumAccount){
+               for (int i = 0; i <Products.size() ; i++) {
+                   if (Products.get(i).getName().equals(product)){
+                       Product p=Products.get(i);
+                       ((PremiumAccount)this.CurrentWebUser.getCustomer().getAccount()).addProduct(p);
+                       return;
+                   }
+               }
+           }
+           System.out.println("You are not a premium account");
     }
 
     public void Display_Order()

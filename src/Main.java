@@ -12,7 +12,9 @@ public class Main {
     public static void main(String[] args) {
 
         System1 s1=new System1();
+        s1.AddProduct();
         s1.Add_WebUser("GuyGlo");///todo add args[2] input from cmd
+        s1.Login("1234");
         //if(args[0]=="login"){s.login()};
         Supplier s=new Supplier("312","nim");
         Product p=new Product("111","CoffeMachine",s);
@@ -20,6 +22,7 @@ public class Main {
         s1.Add_WebUser("1234");
         s1.AddProduct();
         s1.Login("1234");
+        s1.AddProduct();
         s1.MakeOrder();
         System.out.println(p.getSupplier().getId());
         System.out.println(p.getId());
