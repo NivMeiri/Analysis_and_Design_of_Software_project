@@ -86,11 +86,22 @@ public class System1 {
         OrderNum++;
         Scanner sciny=new Scanner(System.in);
         /// TODO CHECK IF THE WEBUSER EXIST ///
-        System.out.println("Who would you like to order from?: ");
-        String name=sciny.nextLine();
-        WebUser MyWeb =this.Webusers.get(name);//using the hashmap
+        WebUser MyWeb;
+        while (true) {
+            System.out.println("Who would you like to order from?: ");
+            String name = sciny.nextLine();
+            MyWeb = this.Webusers.get(name);//using the hashmap
+            if (MyWeb !=null)
+                break;
+            System.out.println("Please enter valid name");
+        }
         MyWeb.getShoppingCart().printProducts();
         /// TODO CHECK IF THERE IS A PRODUCTS ///
+        if(MyWeb.getShoppingCart().numberOfLineItems()==0){
+            System.out.println("The WebUser has no products");
+            return;
+        }
+
         System.out.println("Would you like to order one of our products? (y/n)");
         String ans = sciny.nextLine();
         while (ans == "y"){
@@ -104,7 +115,7 @@ public class System1 {
                         UserItem=MyWeb.getShoppingCart().getLineItems().get(i);
                         break; } }
                 if (UserItem==null)
-                    System.out.println("Please enter valid name!");
+                    System.out.println("Please enter a valid name!");
             }
             while (true) {
                 System.out.println("How many units do you want?");
@@ -137,14 +148,19 @@ public class System1 {
                 break;
             case "n":
                 System.out.println("When do you want to pay?");
-                String date=sciny.nextLine();
+                System.out.println("insert day between 1-31:");
+                String day=sciny.nextLine();
+                System.out.println("insert month between 1-12:");
+                String month=sciny.nextLine();
+                System.out.println("insert year between 2020-2021:");
+                String year=sciny.nextLine();
                 myPayment=new DelayedPayment(this.CurrentWebUser.getLogin_id(), date, myOrder.getTotal(), "", MyWeb, myOrder);
                 myOrder.addPayment(myPayment);
                 break;
             default:
         }
     }
-    
+
     public void Check_Func(){
         System.out.println("Working?"); }
     public void Display_Order(){ }
