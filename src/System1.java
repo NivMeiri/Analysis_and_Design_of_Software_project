@@ -1,16 +1,15 @@
-import jdk.nashorn.internal.objects.Global;
-
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.sql.Date;
 public class System1 {
     private HashMap<String, WebUser> Webusers;
     private WebUser CurrentWebUser=null;
     private List<Order> Oreders;
     private Order LastOreder=null;
-    private List<Product>  Pruducts;
+    private List<Product> Products;
+    //-------------------------------------------
+    private HashMap<Object, Integer> AllObjInSys;
+    private int id=0;
+    //-------------------------------------------
     public System1(){
         this.CurrentWebUser=null;
         this.LastOreder=null;
@@ -120,9 +119,53 @@ public class System1 {
     }
     public void Link_Product(){}
     public void AddProduct(){}
-    public void Delete_Product(){}
-    public void Show_all_Objects(){
+
+    public void Delete_Product(String Product_name){
+        //if no product's name was given. ?
+        if(Product_name.length()==0){
+            System.out.println("No product name is written. Please try again");
+            return;
+        }
+        boolean foundAny = false;
+        for(Product p: Products){
+            if(p.getName().equals(Product_name)){
+                foundAny =true;
+                p.delete();
+            }
+        }
+        //if name given isn't an existed product's name in system, then try again.
+        if(!foundAny) {System.out.println("Product does not exist. Please try again")};
     }
-    public void Show_object_id(){}
+
+    public void Show_all_Objects(){
+        System.out.println("| Object |  id  |  name  |");
+        Set<Object> objArr = AllObjInSys.keySet();
+        for(Object obj: objArr){
+            if(obj instanceof Product){
+                System.out.println("| "+obj.getClass().getName()+" | "+AllObjInSys.get(obj)+" | "+((Product) obj).getName()+" |");
+            }
+            else if(obj instanceof Order){
+                System.out.println("| "+obj.getClass().getName()+" | "+AllObjInSys.get(obj)+" | "+((Order) obj).getNumber()+" |");
+            }
+            else if(obj instanceof WebUser){
+                System.out.println("| "+obj.getClass().getName()+" | "+AllObjInSys.get(obj)+" | "+((WebUser) obj).getLogin_id()+" |");
+            }
+            else if(obj instanceof Customer){
+                System.out.println("| "+obj.getClass().getName()+" | "+AllObjInSys.get(obj)+" | "+((Customer) obj).getId()+" |");
+            }
+            //-------------TODO how many shall i do?-------
+        }
+    }
+
+    public void Show_object_id(int id){
+        Set<Object> objArr = AllObjInSys.keySet();
+        for (Object obj : objArr) {
+            if (AllObjInSys.get(obj).equals(id)) {
+                System.out.println("System ID: "+id);
+                System.out.println(obj.toString());
+                return;
+            }
+        }
+    }
 
 }
