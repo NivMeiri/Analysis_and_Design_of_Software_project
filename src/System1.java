@@ -174,15 +174,64 @@ public class System1 {
     }
 
 
-    public void Display_Order() {
-    }
 
     public void Link_Product() {
     }
 
-    public void AddProduct() {
+    public void Display_Order()
+    ///****Ori wrote****
+    {
+        if (this.CurrentWebUser==null)
+        {
+            System.out.println("There is no active user in the system");
+        }
+        else
+        {
+            if (this.CurrentWebUser.getCustomer().getAccount().getOrders().size() < 1)
+            {
+                System.out.println("The customer has no orders");
+            }
+            else
+            {
+                Order o = this.CurrentWebUser.getCustomer().getAccount().getOrder(-1);/// check with Hadassa - if the new order will
+                /// be in the first or the last place in the list
+                System.out.println("Number " + o.getNumber() + "\n");
+                System.out.println("Ordered in " + o.getOrederd() + "\n");
+                System.out.println("Shipped in " + o.getShipped() + "\n");
+                System.out.println("Address " + o.getShip_to()+ "\n");
+                System.out.println("Status " + o.getStatus()+ "\n");
+                System.out.println("Total " + o.getTotal() + "\n");
+            }
+        }
     }
+    public void Niv_Branch(){};
+    public void AddProduct()
+    {
+        Supplier tmpSup;
+        System.out.println("Please enter Supplier id\n");
+        Scanner s = new Scanner(System.in);
+        String id = s.nextLine();
+        if (Suppliers.get(id) ==null)
+        {       System.out.println("Supplier's Id is unidentified");
+                System.out.println("Please enter Supplier name\n");
+                String name = s.nextLine();
+                tmpSup=new Supplier(id,name);
+                Suppliers.put(id,tmpSup);
+        }
+        else
+        {
+            tmpSup = Suppliers.get(id);
+        }
+        System.out.println("Please enter Product name\n");
+        String productName = s.nextLine();
+        System.out.println("Please enter Product id\n");
+        String productid = s.nextLine();
+        Product newProduct = new Product(productid ,productName, tmpSup) ;
+        System.out.println("New product added\n");
+        Products.add(newProduct);
+        tmpSup.addProduct(productid,productName);
 
+    }
     public void Delete_Product(String Product_name) {
         //if no product's name was given. ?
         if (Product_name.length() == 0) {
@@ -198,10 +247,9 @@ public class System1 {
         }
         //if name given isn't an existed product's name in system, then try again.
         if (!foundAny) {
-            System.out.println("Product does not exist. Please try again")
+            System.out.println("Product does not exist. Please try again");
         } ;
     }
-
     public void Show_all_Objects() {
         System.out.println("| Object |  id  |  name  |");
         Set<Object> objArr = AllObjInSys.keySet();
@@ -218,7 +266,6 @@ public class System1 {
             //-------------TODO how many shall i do?-------
         }
     }
-
     public void Show_object_id(int id) {
         Set<Object> objArr = AllObjInSys.keySet();
         for (Object obj : objArr) {
