@@ -10,8 +10,13 @@ public class Main {
 
 
     public static void main(String[] args) {
+<<<<<<< HEAD
         System1 s1=new System1();
         //s.Add_WebUser("9999");
+=======
+        System1 s=new System1();
+        s.Add_WebUser("GuyGlo");///todo add args[2] input from cmd
+>>>>>>> Niv's-Branch--System1
         //if(args[0]=="login"){s.login()};
         System.out.println("Hello World!");
         System.out.println("hey team");
