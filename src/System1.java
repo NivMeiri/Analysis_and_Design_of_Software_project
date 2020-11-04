@@ -106,6 +106,7 @@ public class System1 {
     }
 
     public void LogOut() {
+           this.CurrentWebUser=null;
     }
 
     public void order() {
