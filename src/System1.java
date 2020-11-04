@@ -2,11 +2,11 @@ import jdk.nashorn.internal.objects.Global;
 
 import java.util.*;
 import java.sql.Date;
+
 public class System1 {
     private HashMap<String, WebUser> Webusers;
     private WebUser CurrentWebUser = null;
     private List<Order> Oreders;
-<<<<<<< HEAD
     private Order LastOreder = null;
     private int OrderNum = 0;
     private Dictionary<String, Supplier> Suppliers;
@@ -14,17 +14,10 @@ public class System1 {
     private HashMap<Object, Integer> AllObjInSys;
     private int id = 0;
 
-    public System1() {
-        this.CurrentWebUser = null;
-        this.LastOreder = null;
-=======
-    private Order LastOreder=null;
-    private List<Product>  Pruducts;
     public System1(){
         this.CurrentWebUser=null;
         this.LastOreder=null;
         this.Webusers=new HashMap<String, WebUser>();
->>>>>>> Niv's-Branch--System1
     }
 
     /*
@@ -33,21 +26,8 @@ public class System1 {
     3) cerate an Account with null ShoppingCart
     4) finish the WebUser
     5) create ShoppingCart With WebUser, set cart to Account
-
-    */
-<<<<<<< HEAD
-    public void Add_WebUser(String ID) {
-        System.out.println("Enter your password: ");
-        Scanner s = new Scanner(System.in);
-        String Pass = s.nextLine();
-        System.out.println("Are you a Premium User? (y/n)");
-        String YesOrNo = s.nextLine();
-        System.out.println("Please enter your addres: ");
-        Address newAddres = new Address("street", 1, "city", "state", 32942);          /////TODO fix here///////
-        String myAddress = s.nextLine();
-        System.out.println(myAddress);
-=======
-    public void  Add_WebUser(String ID){
+*/
+       public void  Add_WebUser(String ID){
         if (this.Webusers.containsKey(ID)){
             System.out.println("This user already exists");
             return;
@@ -59,34 +39,17 @@ public class System1 {
         System.out.println("Please enter your address: ");
         String Address = s.nextLine();
         Address newAddress = new Address(Address);          /////TODO fix here///////
->>>>>>> Niv's-Branch--System1
         System.out.println("Please enter your Phone Number: ");
         String pNumber = s.nextLine();
         System.out.println("Please enter your Email: ");
         String eMail = s.nextLine();
-<<<<<<< HEAD
-        Customer newCustomer = new Customer(ID, newAddres, pNumber, eMail, null);
-        Account a1 = null;
-        switch (YesOrNo) {
-=======
         Customer newCustomer = new Customer(ID,newAddress,pNumber,eMail,null);
         Account NewAccount=null;
->>>>>>> Niv's-Branch--System1
 
         System.out.println("Are you a Premium User? (y/n)");
         String YesOrNo = s.nextLine();
         switch (YesOrNo){
             case "y":
-<<<<<<< HEAD
-                a1 = new PremiumAccount(ID, "new addressi", false, new Date(2020, 10, 1), null,
-                        0, newCustomer, null);
-                newCustomer.SetAccount(a1);
-                break;
-            case "n":
-                a1 = new Account(ID, "newAddres", false, new Date(2019, 10, 8), null,
-                        0, newCustomer, null);
-                newCustomer.SetAccount(a1);
-=======
                  NewAccount = new PremiumAccount(ID,"new addressi",false,new  Date(2020,10,1),null,
                         0,newCustomer,null);
                  newCustomer.SetAccount(NewAccount);
@@ -95,27 +58,19 @@ public class System1 {
                  NewAccount = new Account(ID,"newAddres",false,new Date(2019,10,8),null,
                         0,newCustomer,null);
                 newCustomer.SetAccount(NewAccount);
->>>>>>> Niv's-Branch--System1
                 break;
 
             default:
                 System.out.println("Are you a Premium User? (y/n)");
-                String YesOrNo = s.nextLine();
+                 YesOrNo = s.nextLine();
 
 
         }
 
-<<<<<<< HEAD
-        WebUser myUser = new WebUser(ID, Pass, UserState.New, newCustomer);
-        ShoppingCart shop1 = new ShoppingCart(new Date(2020, 9, 9), myUser, a1);
-        if (a1 != null) {
-            a1.setShoppingCart(shop1);
-=======
         WebUser myUser = new WebUser(ID,Pass,UserState.New,newCustomer);
         ShoppingCart shop1 = new ShoppingCart(new Date(2020,9,9),myUser,NewAccount);
         if (NewAccount != null) {
             NewAccount.setShoppingCart(shop1);
->>>>>>> Niv's-Branch--System1
             myUser.setShoppingCart(shop1);
         }
         System.out.println(NewAccount instanceof PremiumAccount);
@@ -123,13 +78,11 @@ public class System1 {
         System.out.println(myUser.toString());
         System.out.println(newCustomer.toString());
     }
-
-    public void Remove_Webuser(String Login_id) {
+    public void Remove_Webuser(String Login_id){
         this.Webusers.get(Login_id).delete();
     }
-
-    public void Login(String Login_id) {
-        if (this.Webusers.get(Login_id) == null) {
+    public void Login(String Login_id){
+        if(this.Webusers.get(Login_id)==null) {
             System.out.println("The user is not exist!!");
         }
         if(this.CurrentWebUser!=null)
@@ -206,7 +159,8 @@ public class System1 {
         Payment myPayment;
         switch (ans) {
             case "y":
-                myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), Date, myOrder.getTotal(), "", MyWeb, myOrder);
+
+                myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), new Date(2020,7,7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder,true);
                 myPayment.make_payment();
                 myOrder.addPayment(myPayment);
                 break;
@@ -218,7 +172,7 @@ public class System1 {
                 String month = sciny.nextLine();
                 System.out.println("insert year between 2020-2021:");
                 String year = sciny.nextLine();
-                myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(),new Date(2020,3,7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder);
+                myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(),new Date(2020,3,7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder,new Date(2020,9,9));
                 myOrder.addPayment(myPayment);
                 break;
             default:
