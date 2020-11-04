@@ -25,6 +25,15 @@ public class Product
   //------------------------
   // CONSTRUCTOR
   //------------------------
+  public Product(Supplier aSupplier)
+  {
+    boolean didAddSupplier = setSupplier(aSupplier);
+    if (!didAddSupplier)
+    {
+      throw new RuntimeException("Unable to create product due to supplier. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    lineItems = new ArrayList<LineItem>();
+  }
 
   public Product(String aId, String aName, Supplier aSupplier)
   {

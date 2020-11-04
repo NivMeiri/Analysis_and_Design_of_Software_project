@@ -23,7 +23,10 @@ public class Supplier
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
+  public Supplier()
+  {
+    products = new ArrayList<Product>();
+  }
   public Supplier(String aId, String aName)
   {
     id = aId;
