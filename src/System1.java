@@ -79,8 +79,11 @@ public class System1 {
             NewAccount.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
         }
+        /*
         System.out.println(NewAccount instanceof PremiumAccount);
         System.out.println(NewAccount instanceof Account);
+        */
+         
         System.out.println(myUser.toString());
         System.out.println(newCustomer.toString());
     }
