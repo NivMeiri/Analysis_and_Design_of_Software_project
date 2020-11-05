@@ -7,25 +7,26 @@ public class System1 {
     private WebUser CurrentWebUser = null;
     private Order LastOreder = null;
     private int OrderNum = 0;
-    private int id = 0;
-
+    static int Static_Id = 1;
     private HashMap<String, WebUser> Webusers;
-    private LinkedList<Order> Oreders;
+    private Vector<Order> Oreders;
     private HashMap<String, Supplier> Suppliers;
-    private LinkedList<Product> Products;
+    private Vector<Product> Products;
+    // todo when adding object to the
     private HashMap<Object, Integer> AllObjInSys_obj;
     private HashMap<Integer, Object> AllObjInSys_id;
-    private LinkedList<Account> Accounts;
-    private LinkedList<Customer> Customers;
-
+    private Vector<Account> Accounts;
+    private Vector<Customer> Customers ;
 
     public System1() {
         this.CurrentWebUser = null;
         this.LastOreder = null;
         this.Webusers = new HashMap<String, WebUser>();
         this.Suppliers = new HashMap<String, Supplier>();
-        this.Products = new LinkedList<Product>();
-        this.Oreders = new LinkedList<Order>();
+        this.AllObjInSys_id=new HashMap<Integer, Object>();
+        this.AllObjInSys_obj=new HashMap<Object, Integer>();
+        this.Products = new Vector<>();
+        this.Oreders = new Vector<>();
     }
 
     /*
@@ -52,6 +53,9 @@ public class System1 {
         System.out.println("Please enter your Email: ");
         String eMail = s.nextLine();
         Customer newCustomer = new Customer(ID, newAddress, pNumber, eMail, null);
+        this.AllObjInSys_id.put(Static_Id,newCustomer);
+        this.AllObjInSys_obj.put(newCustomer,Static_Id);
+        Static_Id+=1;
         Account NewAccount = null;
         System.out.println("Are you a Premium User? (y/n)");
         String YesOrNo = s.nextLine();
@@ -260,7 +264,6 @@ public class System1 {
             }
         }
     }
-
     public void AddProduct() {
         Supplier tmpSup;
         System.out.println("Please enter Supplier id\n");
@@ -279,7 +282,10 @@ public class System1 {
         String productName = s.nextLine();
         System.out.println("Please enter Product id\n");
         String productid = s.nextLine();
-        Product newProduct = new Product(productid, productName, tmpSup);
+        System.out.println("Please enter Product price\n");
+        String price = s.nextLine();
+        ///todo add input check
+        Product newProduct = new Product(productid, productName, tmpSup, Integer.parseInt(price));
         System.out.println("New product added\n");
         Products.add(newProduct);
         tmpSup.addProduct(productid, productName);
@@ -304,38 +310,69 @@ public class System1 {
             System.out.println("Product does not exist. Please try again");
         }
     }
-        public void Show_all_Objects () {
-            System.out.println("| Object |  id  |  name  |");
-            Set<Object> objArr = AllObjInSys_obj.keySet();
-            for (Object obj : objArr) {
-                if (obj instanceof Product) {
-                    System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + " | " + ((Product) obj).getName() + " |");
-                } else if (obj instanceof Order) {
-                    System.out.println("| Order | " + AllObjInSys_obj.get(obj) + " | " + ((Order) obj).getNumber() + " |");
-                } else if (obj instanceof WebUser) {
-                    System.out.println("| WebUser | " + AllObjInSys_obj.get(obj) + " | " + ((WebUser) obj).getLogin_id() + " |");
-                } else if (obj instanceof Customer) {
-                    System.out.println("| Customer | " + AllObjInSys_obj.get(obj) + " | " + ((Customer) obj).getId() + " |");
-                } else if (obj instanceof ShoppingCart) {
-                    System.out.println("| Shopping Cart | " + AllObjInSys_obj.get(obj) + " | " + ((ShoppingCart) obj).getCretaed() + " |");
-                } else if (obj instanceof Account) {
-                    System.out.println("| Account | " + AllObjInSys_obj.get(obj) + " | " + ((Account) obj).getID() + " |");
-                } else if (obj instanceof PremiumAccount) {
-                    System.out.println("| PremiumAccount | " + AllObjInSys_obj.get(obj) + " | " + ((PremiumAccount) obj).getID() + " |");
-                } else if (obj instanceof LineItem) {
-                    System.out.println("| LineItem | " + AllObjInSys_obj.get(obj) + " | " + ((LineItem) obj).getProduct().getName() + " |");
-                } else if (obj instanceof Payment) {
-                    System.out.println("| Payment | " + AllObjInSys_obj.get(obj) + " | " + ((Payment) obj).getId() + " |");
-                } else if (obj instanceof DelayedPayment) {
-                    System.out.println("| DelayedPayment | " + AllObjInSys_obj.get(obj) + " | " + ((DelayedPayment) obj).getId() + " |");
-                } else if (obj instanceof ImmediatePayment) {
-                    System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + " | " + ((ImmediatePayment) obj).getId() + " |");
-                } else if (obj instanceof Address) {
-                    System.out.println("| Address | " + AllObjInSys_obj.get(obj) + " | " + ((Address) obj).getZipCode() + " |");
-                }
+
+    public void Show_all_Objects() {
+        System.out.println("| Object |  id  |  name  |");
+        Set<Object> objArr = AllObjInSys_obj.keySet();
+        for (Object obj : this.AllObjInSys_obj.keySet()) {
+            if (obj instanceof Product) {
+                System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + " | " + ((Product) obj).getName() + " |");
+            } else if (obj instanceof Order) {
+                System.out.println("| Order | " + AllObjInSys_obj.get(obj) + " | " + ((Order) obj).getNumber() + " |");
+            } else if (obj instanceof WebUser) {
+                System.out.println("| WebUser | " + AllObjInSys_obj.get(obj) + " | " + ((WebUser) obj).getLogin_id() + " |");
+            } else if (obj instanceof Customer) {
+                System.out.println("| Customer | " + AllObjInSys_obj.get(obj) + " | " + ((Customer) obj).getId() + " |");
+            } else if (obj instanceof ShoppingCart) {
+                System.out.println("| Shopping Cart | " + AllObjInSys_obj.get(obj) + " | " + ((ShoppingCart) obj).getCretaed() + " |");
+            } else if (obj instanceof Account) {
+                System.out.println("| Account | " + AllObjInSys_obj.get(obj) + " | " + ((Account) obj).getID() + " |");
+            } else if (obj instanceof PremiumAccount) {
+                System.out.println("| PremiumAccount | " + AllObjInSys_obj.get(obj) + " | " + ((PremiumAccount) obj).getID() + " |");
+            } else if (obj instanceof LineItem) {
+                System.out.println("| LineItem | " + AllObjInSys_obj.get(obj) + " | " + ((LineItem) obj).getProduct().getName() + " |");
+            } else if (obj instanceof Payment) {
+                System.out.println("| Payment | " + AllObjInSys_obj.get(obj) + " | " + ((Payment) obj).getId() + " |");
+            } else if (obj instanceof DelayedPayment) {
+                System.out.println("| DelayedPayment | " + AllObjInSys_obj.get(obj) + " | " + ((DelayedPayment) obj).getId() + " |");
+            } else if (obj instanceof ImmediatePayment) {
+                System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + " | " + ((ImmediatePayment) obj).getId() + " |");
+            } else if (obj instanceof Address) {
+                System.out.println("| Address | " + AllObjInSys_obj.get(obj) + " | " + ((Address) obj).getZipCode() + " |");
+            }
+            else if (obj instanceof Supplier) {
+                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + " | " + ((Supplier) obj).getId() + " |"+((Supplier)obj).getName());
             }
         }
     }
+
+    public void Show_object_id(int id) {
+        Object obj = AllObjInSys_id.get(id);
+        System.out.println(obj.getClass().getName() + " ID: " + id);
+        obj.toString();
+    }
+
+    public void Set_Supplier(String id, String name) {
+        Supplier s=new Supplier(id,name);
+        this.Suppliers.put(id, s);
+        this.AllObjInSys_id.put(Static_Id,s);
+        this.AllObjInSys_obj.put(s,Static_Id);
+        Static_Id+=1;
+    }
+
+    public Supplier get_Supplier(String id) {
+        return this.Suppliers.get(id);
+    }
+
+    public void Set_Product(String id, String name, Supplier s, int price) {
+        Product p=new Product(id,name,s,price);
+        this.Products.add(p);
+        this.AllObjInSys_id.put(Static_Id,p);
+        this.AllObjInSys_obj.put(p,Static_Id);
+        Static_Id+=1;
+    }
+
+}
 
 
 

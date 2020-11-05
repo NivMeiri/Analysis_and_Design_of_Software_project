@@ -27,10 +27,11 @@ public class Product
   // CONSTRUCTOR
   //------------------------
 
-  public Product(String aId, String aName, Supplier aSupplier)
+  public Product(String aId, String aName, Supplier aSupplier,int price)
   {
     id = aId;
     name = aName;
+    this.price=price;
     boolean didAddSupplier = setSupplier(aSupplier);
     if (!didAddSupplier)
     {

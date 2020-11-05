@@ -96,9 +96,11 @@ public class Supplier
     return 0;
   }
   /* Code from template association_AddManyToOne */
+
+  /// todo check what default price to set
   public Product addProduct(String aId, String aName)
   {
-    return new Product(aId, aName, this);
+    return new Product(aId, aName, this,999);
   }
 
   public boolean addProduct(Product aProduct)
@@ -179,9 +181,12 @@ public class Supplier
             "id" + ":" + getId()+ ", " +
             "name" + ":" + getName()+ "]";
     String Prod2Obj = "";
+    /*
     for(Product prod: products){
       Prod2Obj+="\nProduct: "+prod.getName();
     }
-    return InfoAboutObj+Prod2Obj;
+    */
+
+    return InfoAboutObj;
   }
 }
