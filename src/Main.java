@@ -14,14 +14,15 @@ public class Main {
         Scanner in = new Scanner(System.in);
         System.out.println("Please enter command: ");
         String msg = in.nextLine();
-        /*
+
         String[] splited = msg.split("\\s+");
         String First_Command=splited[0];
         String Second_Command=splited[1];
         String input=splited[2];
+        int Length=
         for (String s :splited)
             System.out.println(s);
-         */
+
         switch (msg) {
             case "Add WebUser":  s1.Add_WebUser("1234");
                 break;
