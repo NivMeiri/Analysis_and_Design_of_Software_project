@@ -389,14 +389,22 @@ public class Account
   }
   public String toString()
   {
-    return super.toString() + "["+
-            "ID" + ":" + getID()+ "," +
-            "Billing_Address" + ":" + getBilling_Address()+ "," +
-            "is_closed" + ":" + getIs_closed()+ "," +
-            "balance" + ":" + getBalance()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "open" + "=" + (getOpen() != null ? !getOpen().equals(this)  ? getOpen().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "closed" + "=" + (getClosed() != null ? !getClosed().equals(this)  ? getClosed().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "shoppingCart = "+(getShoppingCart()!=null?Integer.toHexString(System.identityHashCode(getShoppingCart())):"null");
+    String infoAboutObj = "["+
+            "id" + ":" + getID()+ ", " +
+            "Billing_Address" + ":" + getBilling_Address()+ ", " +
+            "is_closed" + ":" + getIs_closed()+ ", " +
+            "balance" + ":" + getBalance()+ "]" +
+            "\n" + "open" + "=" + open.toString() +
+            "\n" + "closed" + "=" + closed.toString();
+    String Conn2Obj = "\nCustomer = "+customer.getId() + ",\nShoppingCart = "+shoppingCart.getCretaed();
+    String Orders2Obj = "";
+    String Pay2Obj = "";
+    for(Order order: orders){
+      Orders2Obj +="\nOrder: "+order.getNumber();
+    }
+    for(Payment pay: payments){
+      Pay2Obj +="\nPayment: "+pay.getId();
+    }
+    return infoAboutObj+"\n"+Conn2Obj+"\n"+Orders2Obj+Pay2Obj;
   }
 }

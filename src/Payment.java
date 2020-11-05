@@ -172,12 +172,14 @@ public class Payment
 
   public String toString()
   {
-    return super.toString() + "["+
-            "Id" + ":" + getId()+ "," +
-            "Total" + ":" + getTotal()+ "," +
-            "Details" + ":" + getDetails()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "Paid" + "=" + (getPaid() != null ? !getPaid().equals(this)  ? getPaid().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "account = "+(getAccount()!=null?Integer.toHexString(System.identityHashCode(getAccount())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null");
+    String InfoAboutObj = "["+
+            "Id" + ":" + getId()+ ", " +
+            "Total" + ":" + getTotal()+ ", " +
+            "Details" + ":" + getDetails()+ "]";
+    String Conn2Obj =
+            "\nPaid" + "=" + Paid.toString()
+            +"\nAccount = "+ account.getID()
+            +"\nOrder = "+ order.getNumber();
+    return InfoAboutObj+Conn2Obj;
   }
 }

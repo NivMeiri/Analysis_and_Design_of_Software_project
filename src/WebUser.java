@@ -178,11 +178,13 @@ public class WebUser
 
   public String toString()
   {
-    return super.toString() + "["+
+    String InfoAboutObj = "["+
             "Login_id" + ":" + getLogin_id()+ "," +
-            "Password" + ":" + getPassword()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "State" + "=" + (getState() != null ? !getState().equals(this)  ? getState().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "shoppingCart = "+(getShoppingCart()!=null?Integer.toHexString(System.identityHashCode(getShoppingCart())):"null");
+            "Password" + ":" + getPassword()+ "]";
+    String Conn2Obj =
+            "\nState" + "=" + State.toString()
+            + "\nCustomer = " + customer.getId()
+            + "\nShoppingCart = " +shoppingCart.getCretaed();
+    return InfoAboutObj+Conn2Obj;
   }
 }

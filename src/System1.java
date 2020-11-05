@@ -13,7 +13,8 @@ public class System1 {
     private LinkedList<Order> Oreders;
     private HashMap<String, Supplier> Suppliers;
     private LinkedList<Product> Products;
-    private HashMap<Object, Integer> AllObjInSys;
+    private HashMap<Object, Integer> AllObjInSys_obj;
+    private HashMap<Integer, Object> AllObjInSys_id;
     private LinkedList<Account>Accounts;
     private LinkedList<Customer>Customers;
 
@@ -308,36 +309,76 @@ public class System1 {
                 p.delete();
             }
         }
-        //if name given isn't an existed product's name in system, then try again.
+        //if name given isn't an existing product's name in system, then try again.
         if (!foundAny) {
             System.out.println("Product does not exist. Please try again");
+<<<<<<< HEAD
         } 
+=======
+        }
+>>>>>>> shiri_supplier
     }
     public void Show_all_Objects() {
         System.out.println("| Object |  id  |  name  |");
-        Set<Object> objArr = AllObjInSys.keySet();
+        Set<Object> objArr = AllObjInSys_obj.keySet();
         for (Object obj : objArr) {
             if (obj instanceof Product) {
-                System.out.println("| " + obj.getClass().getName() + " | " + AllObjInSys.get(obj) + " | " + ((Product) obj).getName() + " |");
+                System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + " | " + ((Product) obj).getName() + " |");
             } else if (obj instanceof Order) {
-                System.out.println("| " + obj.getClass().getName() + " | " + AllObjInSys.get(obj) + " | " + ((Order) obj).getNumber() + " |");
+                System.out.println("| Order | " + AllObjInSys_obj.get(obj) + " | " + ((Order) obj).getNumber() + " |");
             } else if (obj instanceof WebUser) {
-                System.out.println("| " + obj.getClass().getName() + " | " + AllObjInSys.get(obj) + " | " + ((WebUser) obj).getLogin_id() + " |");
+                System.out.println("| WebUser | " + AllObjInSys_obj.get(obj) + " | " + ((WebUser) obj).getLogin_id() + " |");
             } else if (obj instanceof Customer) {
-                System.out.println("| " + obj.getClass().getName() + " | " + AllObjInSys.get(obj) + " | " + ((Customer) obj).getId() + " |");
+                System.out.println("| Customer | " + AllObjInSys_obj.get(obj) + " | " + ((Customer) obj).getId() + " |");
+            } else if (obj instanceof ShoppingCart){
+                System.out.println("| Shopping Cart | " + AllObjInSys_obj.get(obj) + " | " + ((ShoppingCart) obj).getCretaed() + " |");
+            } else if (obj instanceof Account){
+                System.out.println("| Account | " + AllObjInSys_obj.get(obj) + " | " + ((Account) obj).getID() + " |");
+            } else if (obj instanceof PremiumAccount){
+                System.out.println("| PremiumAccount | " + AllObjInSys_obj.get(obj) + " | " + ((PremiumAccount) obj).getID() + " |");
+            } else if (obj instanceof LineItem){
+                System.out.println("| LineItem | " + AllObjInSys_obj.get(obj) + " | " + ((LineItem) obj).getProduct().getName() + " |");
+            } else if (obj instanceof Payment){
+                System.out.println("| Payment | " + AllObjInSys_obj.get(obj) + " | " + ((Payment) obj).getId() + " |");
+            } else if (obj instanceof DelayedPayment){
+                System.out.println("| DelayedPayment | " + AllObjInSys_obj.get(obj) + " | " + ((DelayedPayment) obj).getId() + " |");
+            } else if(obj instanceof  ImmediatePayment){
+                System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + " | " + ((ImmediatePayment) obj).getId() + " |");
+            } else if(obj instanceof Address){
+                System.out.println("| Address | " + AllObjInSys_obj.get(obj) + " | " + ((Address) obj).getZipCode() + " |");
             }
-            //-------------TODO how many shall i do?-------
         }
     }
     public void Show_object_id(int id) {
-        Set<Object> objArr = AllObjInSys.keySet();
-        for (Object obj : objArr) {
-            if (AllObjInSys.get(obj).equals(id)) {
-                System.out.println("System ID: " + id);
-                System.out.println(obj.toString());
-                return;
-            }
-        }
+        Object obj = AllObjInSys_id.get(id);
+        System.out.println(obj.getClass().getName()+" ID: " + id);
+        obj.toString();
+        /*if (obj instanceof Product) {
+            ((Product)obj).toString();
+        } else if (obj instanceof Order) {
+            ((Order)obj).toString();
+        } else if (obj instanceof WebUser) {
+            ((WebUser)obj).toString();
+        } else if (obj instanceof Customer) {
+            ((Customer)obj).toString();
+        } else if (obj instanceof ShoppingCart){
+             ((ShoppingCart)obj).toString();
+        } else if (obj instanceof Account){
+             ((Account)obj).toString();
+        } else if (obj instanceof PremiumAccount){
+             ((PremiumAccount)obj).toString();
+        } else if (obj instanceof LineItem){
+             ((LineItem)obj).toString();
+        } else if (obj instanceof Payment){
+             ((Payment)obj).toString();
+        } else if (obj instanceof DelayedPayment){
+             ((DelayedPayment)obj).toString();
+        } else if(obj instanceof  ImmediatePayment){
+             ((ImmediatePayment)obj).toString();
+        } else if(obj instanceof Address){
+             ((Address)obj).toString();
+        }*/
+        return;
     }
 }
 

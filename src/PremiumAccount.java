@@ -147,4 +147,13 @@ public class PremiumAccount extends Account
     super.delete();
   }
 
+  public String toString(){
+
+    String InfoAboutObj = super.toString();
+    String Pro2Obj = "";
+    for(Product prod: products){
+      Pro2Obj += "\nProduct: "+prod.getName();
+    }
+    return InfoAboutObj+Pro2Obj;
+  }
 }

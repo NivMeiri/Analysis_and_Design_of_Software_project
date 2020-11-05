@@ -51,7 +51,7 @@ public class DelayedPayment extends Payment
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "PaymentDate" + "=" + (getPaymentDate() != null ? !getPaymentDate().equals(this)  ? getPaymentDate().toString().replaceAll("  ","    ") : "this" : "null");
+    return super.toString() +
+            "\nPaymentDate" + "=" + PaymentDate.toString();
   }
 }
