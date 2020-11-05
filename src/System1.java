@@ -15,17 +15,17 @@ public class System1 {
     private LinkedList<Product> Products;
     private HashMap<Object, Integer> AllObjInSys_obj;
     private HashMap<Integer, Object> AllObjInSys_id;
-    private LinkedList<Account>Accounts;
-    private LinkedList<Customer>Customers;
+    private LinkedList<Account> Accounts;
+    private LinkedList<Customer> Customers;
 
 
-    public System1(){
-        this.CurrentWebUser=null;
-        this.LastOreder=null;
-        this.Webusers=new HashMap<String, WebUser>();
-        this.Suppliers= new HashMap<String, Supplier>();
-        this.Products=new LinkedList<Product>();
-        this.Oreders=new LinkedList<Order>();
+    public System1() {
+        this.CurrentWebUser = null;
+        this.LastOreder = null;
+        this.Webusers = new HashMap<String, WebUser>();
+        this.Suppliers = new HashMap<String, Supplier>();
+        this.Products = new LinkedList<Product>();
+        this.Oreders = new LinkedList<Order>();
     }
 
     /*
@@ -35,8 +35,8 @@ public class System1 {
     4) finish the WebUser
     5) create ShoppingCart With WebUser, set cart to Account
 */
-       public void  Add_WebUser(String ID){
-        if (this.Webusers.containsKey(ID)){
+    public void Add_WebUser(String ID) {
+        if (this.Webusers.containsKey(ID)) {
             System.out.println("This user already exists");
             return;
         }
@@ -51,31 +51,31 @@ public class System1 {
         String pNumber = s.nextLine();
         System.out.println("Please enter your Email: ");
         String eMail = s.nextLine();
-        Customer newCustomer = new Customer(ID,newAddress,pNumber,eMail,null);
-        Account NewAccount=null;
+        Customer newCustomer = new Customer(ID, newAddress, pNumber, eMail, null);
+        Account NewAccount = null;
         System.out.println("Are you a Premium User? (y/n)");
         String YesOrNo = s.nextLine();
-        switch (YesOrNo){
+        switch (YesOrNo) {
             case "y":
-                 NewAccount = new PremiumAccount(ID,"new addressi",false,new  Date(2020,10,1),null,
-                        0,newCustomer,null);
-                 newCustomer.SetAccount(NewAccount);
-                 break;
+                NewAccount = new PremiumAccount(ID, "new addressi", false, new Date(2020, 10, 1), null,
+                        0, newCustomer, null);
+                newCustomer.SetAccount(NewAccount);
+                break;
             case "n":
-                 NewAccount = new Account(ID,"newAddres",false,new Date(2019,10,8),null,
-                        0,newCustomer,null);
+                NewAccount = new Account(ID, "newAddres", false, new Date(2019, 10, 8), null,
+                        0, newCustomer, null);
                 newCustomer.SetAccount(NewAccount);
                 break;
 
             default:
                 System.out.println("Are you a Premium User? (y/n)");
-                 YesOrNo = s.nextLine();
+                YesOrNo = s.nextLine();
 
         }
 
-        WebUser myUser = new WebUser(ID,Pass,UserState.New,newCustomer);
-        this.Webusers.put(ID,myUser);
-        ShoppingCart shop1 = new ShoppingCart(new Date(2020,9,9),myUser,NewAccount);
+        WebUser myUser = new WebUser(ID, Pass, UserState.New, newCustomer);
+        this.Webusers.put(ID, myUser);
+        ShoppingCart shop1 = new ShoppingCart(new Date(2020, 9, 9), myUser, NewAccount);
         if (NewAccount != null) {
             NewAccount.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
@@ -84,48 +84,47 @@ public class System1 {
         System.out.println(NewAccount instanceof PremiumAccount);
         System.out.println(NewAccount instanceof Account);
         */
-         
+
         System.out.println(myUser.toString());
         System.out.println(newCustomer.toString());
     }
-    public void Remove_Webuser(String Login_id){
 
-           WebUser userToRemove = this.Webusers.get(Login_id);
+    public void Remove_Webuser(String Login_id) {
 
-           this.Webusers.get(Login_id).delete();
+        WebUser userToRemove = this.Webusers.get(Login_id);
+
+        this.Webusers.get(Login_id).delete();
 
 
     }
 
-    public void Login(String Login_id){
-        if(this.Webusers.get(Login_id)==null) {
+    public void Login(String Login_id) {
+        if (this.Webusers.get(Login_id) == null) {
             System.out.println("The user is not exist!!");
-        }
-        else if(this.CurrentWebUser == null) {
+        } else if (this.CurrentWebUser == null) {
             Scanner s = new Scanner(System.in);
             System.out.println("Please enter your Password");
             String Pass = s.nextLine();
-            if (this.Webusers.get(Login_id).getPassword().equals(Pass)){
+            if (this.Webusers.get(Login_id).getPassword().equals(Pass)) {
                 System.out.println("Great success!! Very nice!");
-                this.CurrentWebUser=this.Webusers.get(Login_id);
+                this.CurrentWebUser = this.Webusers.get(Login_id);
             }
-        }
-        else
+        } else
             System.out.println("Someone is already logged in");
     }
 
     public void LogOut() {
-           this.CurrentWebUser=null;
+        this.CurrentWebUser = null;
     }
 
     public void order() {
     }
 
     public void MakeOrder() {
-           if(this.CurrentWebUser == null){
-               System.out.println("Cannot order without user logged in");
-               return;
-           }
+        if (this.CurrentWebUser == null) {
+            System.out.println("Cannot order without user logged in");
+            return;
+        }
         Order myOrder = new Order(String.valueOf(OrderNum), new Date(2000, 10, 18), null, this.CurrentWebUser.getCustomer().getAddress(), OrderStatus.New, 0, this.CurrentWebUser.getCustomer().getAccount());
         OrderNum++;
         Scanner sciny = new Scanner(System.in);
@@ -135,15 +134,15 @@ public class System1 {
             System.out.println("Who would you like to order from?: ");
             String name = sciny.nextLine();
             MyWeb = this.Webusers.get(name);//using the hashmap
-            if (MyWeb==null)
+            if (MyWeb == null)
                 System.out.println("Please enter valid name");
-            else if (!(MyWeb.getCustomer().getAccount()  instanceof PremiumAccount))
+            else if (!(MyWeb.getCustomer().getAccount() instanceof PremiumAccount))
                 System.out.println("You can only order from a premium account");
             else
                 break;
 
         }
-        PremiumAccount premiumUser=(PremiumAccount)MyWeb.getCustomer().getAccount();
+        PremiumAccount premiumUser = (PremiumAccount) MyWeb.getCustomer().getAccount();
         premiumUser.printProducts();
         /// TODO CHECK IF THERE IS A PRODUCTS ///
         if (premiumUser.numberOfProducts() == 0) {
@@ -193,7 +192,7 @@ public class System1 {
         switch (ans) {
             case "y":
 
-                myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), new Date(2020,7,7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder,true);
+                myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), new Date(2020, 7, 7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, true);
                 myPayment.make_payment();
                 myOrder.addPayment(myPayment);
                 break;
@@ -205,7 +204,7 @@ public class System1 {
                 String month = sciny.nextLine();
                 System.out.println("insert year between 2020-2021:");
                 String year = sciny.nextLine();
-                myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(),new Date(2020,3,7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder,new Date(2020,9,9));
+                myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(), new Date(2020, 3, 7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, new Date(2020, 9, 9));
                 myOrder.addPayment(myPayment);
                 break;
             default:
@@ -217,85 +216,76 @@ public class System1 {
     }
 
 
-
     public void Link_Product(String product) {
-           if (this.CurrentWebUser == null){
-               System.out.println("Cannot link a product while no user id connected");
-               return;
-           }
-           if (this.CurrentWebUser.getCustomer().getAccount() instanceof PremiumAccount){
-               for (int i = 0; i <Products.size() ; i++) {
-                   if (Products.get(i).getName().equals(product)){
-                       Scanner sciny = new Scanner(System.in);
-                       System.out.println("At what price would you like to sell the product?");
-                       int price=Integer.valueOf(sciny.nextLine());
-                       System.out.println("How many units do you have from this product?");
-                       int amount=Integer.valueOf(sciny.nextLine());
-                       Product p=Products.get(i);
-                       p.setPrice(price);
-                       p.setAmount(amount);
-                       ((PremiumAccount)this.CurrentWebUser.getCustomer().getAccount()).addProduct(p);
-                       return;
-                   }
-               }
-           }
-           System.out.println("You are not a premium account");
+        if (this.CurrentWebUser == null) {
+            System.out.println("Cannot link a product while no user id connected");
+            return;
+        }
+        if (this.CurrentWebUser.getCustomer().getAccount() instanceof PremiumAccount) {
+            for (int i = 0; i < Products.size(); i++) {
+                if (Products.get(i).getName().equals(product)) {
+                    Scanner sciny = new Scanner(System.in);
+                    System.out.println("At what price would you like to sell the product?");
+                    int price = Integer.valueOf(sciny.nextLine());
+                    System.out.println("How many units do you have from this product?");
+                    int amount = Integer.valueOf(sciny.nextLine());
+                    Product p = Products.get(i);
+                    p.setPrice(price);
+                    p.setAmount(amount);
+                    ((PremiumAccount) this.CurrentWebUser.getCustomer().getAccount()).addProduct(p);
+                    return;
+                }
+            }
+        }
+        System.out.println("You are not a premium account");
     }
 
     public void Display_Order()
     ///****Ori wrote****
     {
-        if (this.CurrentWebUser==null)
-        {
+        if (this.CurrentWebUser == null) {
             System.out.println("There is no active user in the system");
-        }
-        else
-        {
-            if (this.CurrentWebUser.getCustomer().getAccount().getOrders().size() < 1)
-            {
+        } else {
+            if (this.CurrentWebUser.getCustomer().getAccount().getOrders().size() < 1) {
                 System.out.println("The customer has no orders");
-            }
-            else
-            {
+            } else {
                 Order o = this.CurrentWebUser.getCustomer().getAccount().getOrder(-1);/// check with Hadassa - if the new order will
                 /// be in the first or the last place in the list
                 System.out.println("Number " + o.getNumber() + "\n");
                 System.out.println("Ordered in " + o.getOrederd() + "\n");
                 System.out.println("Shipped in " + o.getShipped() + "\n");
-                System.out.println("Address " + o.getShip_to()+ "\n");
-                System.out.println("Status " + o.getStatus()+ "\n");
+                System.out.println("Address " + o.getShip_to() + "\n");
+                System.out.println("Status " + o.getStatus() + "\n");
                 System.out.println("Total " + o.getTotal() + "\n");
             }
         }
     }
 
-    public void AddProduct()
-    {
+    public void AddProduct() {
         Supplier tmpSup;
         System.out.println("Please enter Supplier id\n");
         Scanner s = new Scanner(System.in);
         String id = s.nextLine();
-        if (Suppliers.get(id) ==null)
-        {       System.out.println("Supplier's Id is unidentified");
-                System.out.println("Please enter Supplier name\n");
-                String name = s.nextLine();
-                tmpSup=new Supplier(id,name);
-                Suppliers.put(id,tmpSup);
-        }
-        else
-        {
+        if (Suppliers.get(id) == null) {
+            System.out.println("Supplier's Id is unidentified");
+            System.out.println("Please enter Supplier name\n");
+            String name = s.nextLine();
+            tmpSup = new Supplier(id, name);
+            Suppliers.put(id, tmpSup);
+        } else {
             tmpSup = Suppliers.get(id);
         }
         System.out.println("Please enter Product name\n");
         String productName = s.nextLine();
         System.out.println("Please enter Product id\n");
         String productid = s.nextLine();
-        Product newProduct = new Product(productid ,productName, tmpSup) ;
+        Product newProduct = new Product(productid, productName, tmpSup);
         System.out.println("New product added\n");
         Products.add(newProduct);
-        tmpSup.addProduct(productid,productName);
+        tmpSup.addProduct(productid, productName);
 
     }
+
     public void Delete_Product(String Product_name) {
         //if no product's name was given. ?
         if (Product_name.length() == 0) {
@@ -312,73 +302,40 @@ public class System1 {
         //if name given isn't an existing product's name in system, then try again.
         if (!foundAny) {
             System.out.println("Product does not exist. Please try again");
-<<<<<<< HEAD
-        } 
-=======
         }
->>>>>>> shiri_supplier
     }
-    public void Show_all_Objects() {
-        System.out.println("| Object |  id  |  name  |");
-        Set<Object> objArr = AllObjInSys_obj.keySet();
-        for (Object obj : objArr) {
-            if (obj instanceof Product) {
-                System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + " | " + ((Product) obj).getName() + " |");
-            } else if (obj instanceof Order) {
-                System.out.println("| Order | " + AllObjInSys_obj.get(obj) + " | " + ((Order) obj).getNumber() + " |");
-            } else if (obj instanceof WebUser) {
-                System.out.println("| WebUser | " + AllObjInSys_obj.get(obj) + " | " + ((WebUser) obj).getLogin_id() + " |");
-            } else if (obj instanceof Customer) {
-                System.out.println("| Customer | " + AllObjInSys_obj.get(obj) + " | " + ((Customer) obj).getId() + " |");
-            } else if (obj instanceof ShoppingCart){
-                System.out.println("| Shopping Cart | " + AllObjInSys_obj.get(obj) + " | " + ((ShoppingCart) obj).getCretaed() + " |");
-            } else if (obj instanceof Account){
-                System.out.println("| Account | " + AllObjInSys_obj.get(obj) + " | " + ((Account) obj).getID() + " |");
-            } else if (obj instanceof PremiumAccount){
-                System.out.println("| PremiumAccount | " + AllObjInSys_obj.get(obj) + " | " + ((PremiumAccount) obj).getID() + " |");
-            } else if (obj instanceof LineItem){
-                System.out.println("| LineItem | " + AllObjInSys_obj.get(obj) + " | " + ((LineItem) obj).getProduct().getName() + " |");
-            } else if (obj instanceof Payment){
-                System.out.println("| Payment | " + AllObjInSys_obj.get(obj) + " | " + ((Payment) obj).getId() + " |");
-            } else if (obj instanceof DelayedPayment){
-                System.out.println("| DelayedPayment | " + AllObjInSys_obj.get(obj) + " | " + ((DelayedPayment) obj).getId() + " |");
-            } else if(obj instanceof  ImmediatePayment){
-                System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + " | " + ((ImmediatePayment) obj).getId() + " |");
-            } else if(obj instanceof Address){
-                System.out.println("| Address | " + AllObjInSys_obj.get(obj) + " | " + ((Address) obj).getZipCode() + " |");
+        public void Show_all_Objects () {
+            System.out.println("| Object |  id  |  name  |");
+            Set<Object> objArr = AllObjInSys_obj.keySet();
+            for (Object obj : objArr) {
+                if (obj instanceof Product) {
+                    System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + " | " + ((Product) obj).getName() + " |");
+                } else if (obj instanceof Order) {
+                    System.out.println("| Order | " + AllObjInSys_obj.get(obj) + " | " + ((Order) obj).getNumber() + " |");
+                } else if (obj instanceof WebUser) {
+                    System.out.println("| WebUser | " + AllObjInSys_obj.get(obj) + " | " + ((WebUser) obj).getLogin_id() + " |");
+                } else if (obj instanceof Customer) {
+                    System.out.println("| Customer | " + AllObjInSys_obj.get(obj) + " | " + ((Customer) obj).getId() + " |");
+                } else if (obj instanceof ShoppingCart) {
+                    System.out.println("| Shopping Cart | " + AllObjInSys_obj.get(obj) + " | " + ((ShoppingCart) obj).getCretaed() + " |");
+                } else if (obj instanceof Account) {
+                    System.out.println("| Account | " + AllObjInSys_obj.get(obj) + " | " + ((Account) obj).getID() + " |");
+                } else if (obj instanceof PremiumAccount) {
+                    System.out.println("| PremiumAccount | " + AllObjInSys_obj.get(obj) + " | " + ((PremiumAccount) obj).getID() + " |");
+                } else if (obj instanceof LineItem) {
+                    System.out.println("| LineItem | " + AllObjInSys_obj.get(obj) + " | " + ((LineItem) obj).getProduct().getName() + " |");
+                } else if (obj instanceof Payment) {
+                    System.out.println("| Payment | " + AllObjInSys_obj.get(obj) + " | " + ((Payment) obj).getId() + " |");
+                } else if (obj instanceof DelayedPayment) {
+                    System.out.println("| DelayedPayment | " + AllObjInSys_obj.get(obj) + " | " + ((DelayedPayment) obj).getId() + " |");
+                } else if (obj instanceof ImmediatePayment) {
+                    System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + " | " + ((ImmediatePayment) obj).getId() + " |");
+                } else if (obj instanceof Address) {
+                    System.out.println("| Address | " + AllObjInSys_obj.get(obj) + " | " + ((Address) obj).getZipCode() + " |");
+                }
             }
         }
     }
-    public void Show_object_id(int id) {
-        Object obj = AllObjInSys_id.get(id);
-        System.out.println(obj.getClass().getName()+" ID: " + id);
-        obj.toString();
-        /*if (obj instanceof Product) {
-            ((Product)obj).toString();
-        } else if (obj instanceof Order) {
-            ((Order)obj).toString();
-        } else if (obj instanceof WebUser) {
-            ((WebUser)obj).toString();
-        } else if (obj instanceof Customer) {
-            ((Customer)obj).toString();
-        } else if (obj instanceof ShoppingCart){
-             ((ShoppingCart)obj).toString();
-        } else if (obj instanceof Account){
-             ((Account)obj).toString();
-        } else if (obj instanceof PremiumAccount){
-             ((PremiumAccount)obj).toString();
-        } else if (obj instanceof LineItem){
-             ((LineItem)obj).toString();
-        } else if (obj instanceof Payment){
-             ((Payment)obj).toString();
-        } else if (obj instanceof DelayedPayment){
-             ((DelayedPayment)obj).toString();
-        } else if(obj instanceof  ImmediatePayment){
-             ((ImmediatePayment)obj).toString();
-        } else if(obj instanceof Address){
-             ((Address)obj).toString();
-        }*/
-        return;
-    }
-}
+
+
 
