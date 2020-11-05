@@ -175,8 +175,13 @@ public class Supplier
 
   public String toString()
   {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
+    String InfoAboutObj = "["+
+            "id" + ":" + getId()+ ", " +
             "name" + ":" + getName()+ "]";
+    String Prod2Obj = "";
+    for(Product prod: products){
+      Prod2Obj+="\nProduct: "+prod.getName();
+    }
+    return InfoAboutObj+Prod2Obj;
   }
 }

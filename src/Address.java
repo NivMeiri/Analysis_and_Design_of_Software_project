@@ -62,7 +62,7 @@ public class Address {
 
     @Override
     public String toString(){
-        String address = "" + streetNumber + " " + street + " " + city + " " + state + " " + zipCode;
+        String address = "[" + streetNumber + ", " + street + ", " + city + ", " + state + ", " + zipCode+"]";
         return address;
     }
 }

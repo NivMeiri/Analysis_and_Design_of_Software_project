@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 
+import javax.sound.sampled.Line;
 import java.sql.Date;
 
 // line 9 "model.ump"
@@ -169,12 +170,14 @@ public class Customer
 
   public String toString()
   {
-    return super.toString() + "["+
-            "Id" + ":" + getId()+ "," +
-            "phone" + ":" + getPhone()+ "," +
-            "email" + ":" + getEmail()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "Address" + "=" + (getAddress() != null ? !getAddress().equals(this)  ? getAddress().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "webUser = "+(getWebUser()!=null?Integer.toHexString(System.identityHashCode(getWebUser())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "account = "+(getAccount()!=null?Integer.toHexString(System.identityHashCode(getAccount())):"null");
+    String InfoAboutObj = "["+
+            "Id" + ":" + getId()+ ", " +
+            "phone" + ":" + getPhone()+ ", " +
+            "email" + ":" + getEmail()+ "]";
+    String Conn2Obj =
+            "\nAddress" + "=" + Address.getZipCode()+
+            "\nWebUser = "+ webUser.getLogin_id()+
+            "\nAccount = " + account.getID();
+    return InfoAboutObj+Conn2Obj;
   }
 }

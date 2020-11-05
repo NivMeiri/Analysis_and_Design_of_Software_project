@@ -244,9 +244,14 @@ public class ShoppingCart
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "cretaed" + "=" + (getCretaed() != null ? !getCretaed().equals(this)  ? getCretaed().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "webUser = "+(getWebUser()!=null?Integer.toHexString(System.identityHashCode(getWebUser())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "account = "+(getAccount()!=null?Integer.toHexString(System.identityHashCode(getAccount())):"null");
+    String InfoAboutObj =
+            "Cretaed" + "=" + cretaed.toString()
+            + "\nWebUser = "+ webUser.getLogin_id()
+            + "\nAccount = "+ account.getID();
+    String Line2Obj = "";
+    for(LineItem li: lineItems){
+      Line2Obj+= "\nLineItem: "+li.getProduct().getName();
+    }
+    return InfoAboutObj+Line2Obj;
   }
 }

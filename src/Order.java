@@ -22,7 +22,7 @@ public class Order
 
   //Order Attributes
   private String number;
-  private Date orederd;
+  private Date ordered;
   private Date shipped;
   private Address ship_to;
   private OrderStatus Status;
@@ -40,7 +40,7 @@ public class Order
   public Order(String aNumber, Date aOrederd, Date aShipped, Address aShip_to, OrderStatus aStatus, float aTotal, Account aAccount)
   {
     number = aNumber;
-    orederd = aOrederd;
+    ordered = aOrederd;
     shipped = aShipped;
     ship_to = aShip_to;
     Status = aStatus;
@@ -70,7 +70,7 @@ public class Order
   public boolean setOrederd(Date aOrederd)
   {
     boolean wasSet = false;
-    orederd = aOrederd;
+    ordered = aOrederd;
     wasSet = true;
     return wasSet;
   }
@@ -114,7 +114,7 @@ public class Order
 
   public Date getOrederd()
   {
-    return orederd;
+    return ordered;
   }
 
   public Date getShipped()
@@ -388,13 +388,22 @@ public class Order
 
   public String toString()
   {
-    return super.toString() + "["+
-            "number" + ":" + getNumber()+ "," +
-            "total" + ":" + getTotal()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "orederd" + "=" + (getOrederd() != null ? !getOrederd().equals(this)  ? getOrederd().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "shipped" + "=" + (getShipped() != null ? !getShipped().equals(this)  ? getShipped().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "ship_to" + "=" + (getShip_to() != null ? !getShip_to().equals(this)  ? getShip_to().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "Status" + "=" + (getStatus() != null ? !getStatus().equals(this)  ? getStatus().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "account = "+(getAccount()!=null?Integer.toHexString(System.identityHashCode(getAccount())):"null");
+    String InfoAboutObj = "["+
+            "number" + ":" + getNumber()+ ", " +
+            "total" + ":" + getTotal()+ "]";
+    String Conn2Obj = "\nOrdered" + "=" + ordered.toString()
+            + "\nShipped" + "=" +  shipped.toString()
+            +"\nShip_to" + "=" + ship_to.getZipCode()
+            +"\nStatus" + "=" + Status.toString()
+            +"\nAccount = "+ account.getID();
+    String Pay2Obj = "";
+    String Line2Obj = "";
+    for(Payment pay:payments){
+      Pay2Obj += "\nPayment: "+pay.getId();
+    }
+    for(LineItem li: lineItems){
+      Line2Obj += "\nLineItem: "+li.getProduct().getName();
+    }
+    return InfoAboutObj+Conn2Obj+Pay2Obj+Line2Obj;
   }
 }

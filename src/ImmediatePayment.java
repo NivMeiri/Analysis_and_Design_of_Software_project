@@ -51,7 +51,7 @@ public class ImmediatePayment extends Payment
 
   public String toString()
   {
-    return super.toString() + "["+
-            "phoneConfirmation" + ":" + getPhoneConfirmation()+ "]";
+    return super.toString() +
+            "\nPhoneConfirmation" + ":" + getPhoneConfirmation();
   }
 }

@@ -173,11 +173,13 @@ public class LineItem
 
   public String toString()
   {
-    return super.toString() + "["+
-            "quantity" + ":" + getQuantity()+ "," +
-            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "shoppingCart = "+(getShoppingCart()!=null?Integer.toHexString(System.identityHashCode(getShoppingCart())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "product = "+(getProduct()!=null?Integer.toHexString(System.identityHashCode(getProduct())):"null");
+    String InfoAboutObj = "["+
+            "quantity" + ":" + getQuantity()+ ", " +
+            "price" + ":" + getPrice()+ "]";
+    String Conn2Obj =
+            "\nShoppingCart = "+shoppingCart.getCretaed()
+            + "\nOrder = "+order.getNumber()
+            + "\nProduct = "+product.getId();
+    return InfoAboutObj+Conn2Obj;
   }
 }

@@ -246,10 +246,16 @@ public class Product
 
   public String toString()
   {
-    return super.toString() + "["+
+    String InfoAboutObj = "["+
             "id" + ":" + getId()+ "," +
-            "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "supplier = "+(getSupplier()!=null?Integer.toHexString(System.identityHashCode(getSupplier())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "premiumAccount = "+(getPremiumAccount()!=null?Integer.toHexString(System.identityHashCode(getPremiumAccount())):"null");
+            "name" + ":" + getName()+ "]";
+    String Conn2Obj =
+            "\nsupplier = "+ supplier.getName()
+            +"\nPremiumAccount = "+ premiumAccount.getID();
+    String Line2Obj = "";
+    for(LineItem li: lineItems){
+      Line2Obj += "\nLineItem: "+li.getProduct().getName();
+    }
+    return InfoAboutObj+Conn2Obj+Line2Obj;
   }
 }
