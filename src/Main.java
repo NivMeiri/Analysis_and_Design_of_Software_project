@@ -10,45 +10,70 @@ public class Main {
 
 
     public static void main(String[] args) {
-        System1 s1=new System1();
+        System1 s1 = new System1();
         Scanner in = new Scanner(System.in);
-        System.out.println("Please enter command: ");
-        String msg = in.nextLine();
+        while (true) {
+            System.out.println("Please enter command: ....if you want to stop enter Exit");
+            String msg = in.nextLine();
+            String[] splited = msg.split("\\s+");
+            int Length = splited.length;
+            String First_Command,Second_Command="",Third_input="";
+            First_Command = splited[0];
+            if(Length>1) {
+                Second_Command = splited[1];
+            }
+            if(Length>2) {
+                Third_input = splited[2];
+            }
+            switch (Length) {
+                case 1:
+                    if (First_Command.equals("ShowAllObjects")) {
+                        s1.Show_all_Objects();
+                        break;
+                    }
+                    if (First_Command.equals("ShowObjectId")) {
+                        s1.Show_object_id(Integer.parseInt(Third_input));
+                        break;
+                    }
+                    if (First_Command.equals("Exit")) {
+                        System.out.println("Goodbye!");
+                        return;
+                    }
 
-        String[] splited = msg.split("\\s+");
-        String First_Command=splited[0];
-        String Second_Command=splited[1];
-        String input=splited[2];
-        int Length=
-        for (String s :splited)
-            System.out.println(s);
-
-        switch (msg) {
-            case "Add WebUser":  s1.Add_WebUser("1234");
-                break;
-            case "Remove WebUser":  s1.Remove_Webuser("1234");
-                break;
-            case "Login WebUser" :  s1.Login("1234");
-                break;
-            case"Logout WebUser": s1.LogOut();
-                break;
-            case "Make order":  s1.MakeOrder();
-                break;
-            case "Display order":s1.Display_Order();
-                break;
-            case "Link Product":  s1.Link_Product("1234");
-                break;
-            case "Add Product":  s1.AddProduct();
-                break;
-            case "Delete Product" : s1.Delete_Product("1234");
-                break;
-            case "ShowAllObjects": s1.Show_all_Objects();
-                break;
-            case "ShowObjectId":s1.Show_object_id(1234);
-                break;
-
+                case 2:
+                    if (First_Command.equals("LogOut") && Second_Command.equals("WebUser"))
+                        s1.LogOut();
+                    if (First_Command.equals("Make") && Second_Command.equals("order"))
+                        s1.LogOut();
+                    if (First_Command.equals("Display") && Second_Command.equals("order"))
+                        s1.Display_Order();
+                    if (First_Command.equals("Add") && Second_Command.equals("Product"))
+                        s1.AddProduct();
+                case 3:
+                    if (First_Command.equals("Add") && Second_Command.equals("WebUser")) {
+                        s1.Add_WebUser(Third_input);
+                        break;
+                    }
+                    if (First_Command.equals("Remove") && Second_Command.equals("WebUser")) {
+                        s1.Remove_Webuser(Third_input);
+                        break;
+                    }
+                    if (First_Command.equals("Login") && Second_Command.equals("WebUser")) {
+                        s1.Login(Third_input);
+                        break;
+                    }
+                    if (First_Command.equals("Link") && Second_Command.equals("Product")) {
+                        s1.Link_Product(Third_input);
+                        break;
+                    }
+                    if (First_Command.equals("Delete") && Second_Command.equals("Product")) {
+                        s1.Delete_Product(Third_input);
+                        break;
+                    }
+                default:
+                    System.out.println("Your Input is Incorrect!!Please try again");
+            }
         }
-        System.out.println("finish");
     }
 }
 /*
