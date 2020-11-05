@@ -16,7 +16,8 @@ public class Product
   //Product Attributes
   private String id;
   private String name;
-
+  private int price;
+  private int amount;
   //Product Associations
   private Supplier supplier;
   private PremiumAccount premiumAccount;
@@ -57,6 +58,10 @@ public class Product
     wasSet = true;
     return wasSet;
   }
+  public int getAmount(){return this.amount;}
+  public int getPrice(){return this.price;}
+  public void setAmount(int a){this.amount=a;}
+  public void setPrice(int p){this.price=p;}
 
   public String getId()
   {

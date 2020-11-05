@@ -132,6 +132,12 @@ public class PremiumAccount extends Account
     return wasAdded;
   }
 
+  public void printProducts(){
+    for(int i=0;i<this.products.size();i++){
+      System.out.println(i+")"+products.get(i).getName()+":"+products.get(i).getAmount());
+    }
+  }
+
   public void delete()
   {
     while( !products.isEmpty() )

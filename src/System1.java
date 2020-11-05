@@ -130,9 +130,10 @@ public class System1 {
                 break;
 
         }
-        MyWeb.getShoppingCart().printProducts();
+        PremiumAccount premiumUser=(PremiumAccount)MyWeb.getCustomer().getAccount();
+        premiumUser.printProducts();
         /// TODO CHECK IF THERE IS A PRODUCTS ///
-        if (MyWeb.getShoppingCart().numberOfLineItems() == 0) {
+        if (premiumUser.numberOfProducts() == 0) {
             System.out.println("The WebUser has no products");
             return;
         }
@@ -142,12 +143,12 @@ public class System1 {
         while (ans == "y") {
             System.out.println("What product do you want to add to your Cart?: ");
             String item = sciny.nextLine();
-            LineItem UserItem = null;
+            Product UserItem = null;
             int num;
             while (UserItem == null) {
-                for (int i = 0; i < MyWeb.getShoppingCart().getLineItems().size(); i++) {
-                    if (MyWeb.getShoppingCart().getLineItems().get(i).getProduct().getName().equals(item)) {
-                        UserItem = MyWeb.getShoppingCart().getLineItems().get(i);
+                for (int i = 0; i < premiumUser.numberOfProducts(); i++) {
+                    if (premiumUser.getProducts().get(i).getName().equals(item)) {
+                        UserItem = premiumUser.getProducts().get(i);
                         break;
                     }
                 }
@@ -157,7 +158,7 @@ public class System1 {
             while (true) {
                 System.out.println("How many units do you want?");
                 num = Integer.parseInt(sciny.nextLine());
-                if (UserItem.getQuantity() >= num) {
+                if (UserItem.getAmount() >= num) {
                     if (myOrder.getTotal() + (UserItem.getPrice() * num) < this.CurrentWebUser.getCustomer().getAccount().getBalance())
                         break;
                     System.out.println("You don't have enough money, try ordering less");
@@ -165,8 +166,8 @@ public class System1 {
                     System.out.println("Please enter valid number!");
                 }
             }
-            LineItem myItem = new LineItem(num, UserItem.getPrice(), this.CurrentWebUser.getShoppingCart(), myOrder, UserItem.getProduct());
-            UserItem.setQuantity(UserItem.getQuantity() - num);
+            LineItem myItem = new LineItem(num, UserItem.getPrice(), this.CurrentWebUser.getShoppingCart(), myOrder, UserItem);
+            UserItem.setAmount(UserItem.getAmount() - num);
             myOrder.addLineItem(myItem);
             myOrder.setTotal(myOrder.getTotal() + myItem.getPrice() * num);
             this.CurrentWebUser.getShoppingCart().addLineItem(myItem);
@@ -208,7 +209,14 @@ public class System1 {
            if (this.CurrentWebUser.getCustomer().getAccount() instanceof PremiumAccount){
                for (int i = 0; i <Products.size() ; i++) {
                    if (Products.get(i).getName().equals(product)){
+                       Scanner sciny = new Scanner(System.in);
+                       System.out.println("At what price would you like to sell the product?");
+                       int price=Integer.valueOf(sciny.nextLine());
+                       System.out.println("How many units do you have from this product?");
+                       int amount=Integer.valueOf(sciny.nextLine());
                        Product p=Products.get(i);
+                       p.setPrice(price);
+                       p.setAmount(amount);
                        ((PremiumAccount)this.CurrentWebUser.getCustomer().getAccount()).addProduct(p);
                        return;
                    }
