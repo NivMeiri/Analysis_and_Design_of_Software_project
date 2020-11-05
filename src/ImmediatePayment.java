@@ -2,7 +2,7 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 
-import java.sql.Date;
+import java.util.Date;
 
 // line 45 "model.ump"
 // line 133 "model.ump"

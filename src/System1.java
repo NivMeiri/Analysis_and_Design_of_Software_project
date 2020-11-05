@@ -1,7 +1,7 @@
 import jdk.nashorn.internal.objects.Global;
 
 import java.util.*;
-import java.sql.Date;
+import java.util.Date;
 
 public class System1 {
     private WebUser CurrentWebUser = null;
@@ -44,7 +44,6 @@ public class System1 {
         System.out.println("Enter your password: ");
         Scanner s = new Scanner(System.in);
         String Pass = s.nextLine();
-
         System.out.println("Please enter your address: ");
         String Address = s.nextLine();
         Address newAddress = new Address(Address);          /////TODO fix here///////
@@ -61,12 +60,12 @@ public class System1 {
         String YesOrNo = s.nextLine();
         switch (YesOrNo) {
             case "y":
-                NewAccount = new PremiumAccount(ID, "new addressi", false, new Date(2020, 10, 1), null,
+                NewAccount = new PremiumAccount(ID, "new addressi", false, new Date(), null,
                         0, newCustomer, null);
                 newCustomer.SetAccount(NewAccount);
                 break;
             case "n":
-                NewAccount = new Account(ID, "newAddres", false, new Date(2019, 10, 8), null,
+                NewAccount = new Account(ID, "newAddres", false, new Date(), null,
                         0, newCustomer, null);
                 newCustomer.SetAccount(NewAccount);
                 break;
@@ -74,7 +73,6 @@ public class System1 {
             default:
                 System.out.println("Are you a Premium User? (y/n)");
                 YesOrNo = s.nextLine();
-
         }
 
         WebUser myUser = new WebUser(ID, Pass, UserState.New, newCustomer);
@@ -84,11 +82,6 @@ public class System1 {
             NewAccount.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
         }
-        /*
-        System.out.println(NewAccount instanceof PremiumAccount);
-        System.out.println(NewAccount instanceof Account);
-        */
-
         System.out.println(myUser.toString());
         System.out.println(newCustomer.toString());
     }
@@ -98,10 +91,7 @@ public class System1 {
         WebUser userToRemove = this.Webusers.get(Login_id);
 
         this.Webusers.get(Login_id).delete();
-
-
     }
-
     public void Login(String Login_id) {
         if (this.Webusers.get(Login_id) == null) {
             System.out.println("The user is not exist!!");
@@ -120,7 +110,6 @@ public class System1 {
     public void LogOut() {
         this.CurrentWebUser = null;
     }
-
     public void order() {
     }
 
@@ -129,7 +118,7 @@ public class System1 {
             System.out.println("Cannot order without user logged in");
             return;
         }
-        Order myOrder = new Order(String.valueOf(OrderNum), new Date(2000, 10, 18), null, this.CurrentWebUser.getCustomer().getAddress(), OrderStatus.New, 0, this.CurrentWebUser.getCustomer().getAccount());
+        Order myOrder = new Order(String.valueOf(OrderNum), new Date(), null, this.CurrentWebUser.getCustomer().getAddress(), OrderStatus.New, 0, this.CurrentWebUser.getCustomer().getAccount());
         OrderNum++;
         Scanner sciny = new Scanner(System.in);
         /// TODO CHECK IF THE WEBUSER EXIST ///
@@ -341,7 +330,7 @@ public class System1 {
                 System.out.println("| Address | " + AllObjInSys_obj.get(obj) + " | " + ((Address) obj).getZipCode() + " |");
             }
             else if (obj instanceof Supplier) {
-                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + " | " + ((Supplier) obj).getId() + " |"+((Supplier)obj).getName());
+                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + " | " + ((Supplier) obj).getId() + " |"+((Supplier)obj).getName()+ " |");
             }
         }
     }

@@ -1,14 +1,10 @@
 public class Address {
-
     private String Add;
     private String street;
-
     private int streetNumber;
     private String city;
     private String state;
     private long zipCode;
-
-
 
     public Address(String street, int streetNumber, String city, String state, long zipCode) {
         this.street = street;

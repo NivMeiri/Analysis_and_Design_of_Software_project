@@ -2,11 +2,11 @@
 /*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 
-import java.sql.Date;
+import java.util.Date;
 
 // line 51 "model.ump"
 // line 138 "model.ump"
-public class Payment
+public abstract class Payment
 {
 
   //------------------------
