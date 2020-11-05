@@ -209,7 +209,8 @@ public class Order
   /* Code from template association_AddManyToOne */
   public Payment addPayment(String aId, Date aPaid, float aTotal, String aDetails, Account aAccount)
   {
-    return new Payment(aId, aPaid, aTotal, aDetails, aAccount, this);
+    //todo Add user question if the payment is immediate or Delayed
+    return new ImmediatePayment(aId, aPaid, aTotal, aDetails, aAccount, this,true);
   }
 
   public boolean addPayment(Payment aPayment)

@@ -40,13 +40,22 @@ public class Main {
                     }
                 case 2:
                     if (First_Command.equals("LogOut") && Second_Command.equals("WebUser"))
+                    {
                         s1.LogOut();
-                    if (First_Command.equals("Make") && Second_Command.equals("order"))
-                        s1.LogOut();
-                    if (First_Command.equals("Display") && Second_Command.equals("order"))
-                        s1.Display_Order();
-                    if (First_Command.equals("Add") && Second_Command.equals("Product"))
+                        break;
+                    }
+                if (First_Command.equals("Make") && Second_Command.equals("order")) {
+                        s1.MakeOrder();
+                        break;
+                }
+                if (First_Command.equals("Display") && Second_Command.equals("order")) {
+                    s1.Display_Order();
+                    break;
+                }
+                    if (First_Command.equals("Add") && Second_Command.equals("Product")) {
                         s1.AddProduct();
+                        break;
+                    }
                 case 3:
                     if (First_Command.equals("Add") && Second_Command.equals("WebUser")) {
                         s1.Add_WebUser(Third_input);
