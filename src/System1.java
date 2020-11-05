@@ -85,19 +85,24 @@ public class System1 {
         System.out.println(newCustomer.toString());
     }
     public void Remove_Webuser(String Login_id){
-        this.Webusers.get(Login_id).delete();
+
+           WebUser userToRemove = this.Webusers.get(Login_id);
+
+           this.Webusers.get(Login_id).delete();
+
+
     }
 
     public void Login(String Login_id){
         if(this.Webusers.get(Login_id)==null) {
             System.out.println("The user is not exist!!");
         }
-        else if(this.CurrentWebUser==null) {
+        else if(this.CurrentWebUser == null) {
             Scanner s = new Scanner(System.in);
             System.out.println("Please enter your Password");
             String Pass = s.nextLine();
             if (this.Webusers.get(Login_id).getPassword().equals(Pass)){
-                System.out.println("You've logged in successfully");
+                System.out.println("Great success!! Very nice!");
                 this.CurrentWebUser=this.Webusers.get(Login_id);
             }
         }
@@ -113,6 +118,10 @@ public class System1 {
     }
 
     public void MakeOrder() {
+           if(this.CurrentWebUser == null){
+               System.out.println("Cannot order without user logged in");
+               return;
+           }
         Order myOrder = new Order(String.valueOf(OrderNum), new Date(2000, 10, 18), null, this.CurrentWebUser.getCustomer().getAddress(), OrderStatus.New, 0, this.CurrentWebUser.getCustomer().getAccount());
         OrderNum++;
         Scanner sciny = new Scanner(System.in);
@@ -205,6 +214,10 @@ public class System1 {
 
 
     public void Link_Product(String product) {
+           if (this.CurrentWebUser == null){
+               System.out.println("Cannot link a product while no user id connected");
+               return;
+           }
            if (this.CurrentWebUser.getCustomer().getAccount() instanceof PremiumAccount){
                for (int i = 0; i <Products.size() ; i++) {
                    if (Products.get(i).getName().equals(product)){
@@ -243,7 +256,7 @@ public class System1 {
             }
         }
     }
-    public void Niv_Branch(){};
+
     public void AddProduct()
     {
         Supplier tmpSup;
@@ -287,7 +300,7 @@ public class System1 {
         //if name given isn't an existed product's name in system, then try again.
         if (!foundAny) {
             System.out.println("Product does not exist. Please try again");
-        } ;
+        } 
     }
     public void Show_all_Objects() {
         System.out.println("| Object |  id  |  name  |");
