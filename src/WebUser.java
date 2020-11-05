@@ -165,6 +165,7 @@ public class WebUser
     if (existingCustomer != null)
     {
       existingCustomer.setWebUser(null);
+      existingCustomer.delete();
     }
     ShoppingCart existingShoppingCart = shoppingCart;
     shoppingCart = null;
