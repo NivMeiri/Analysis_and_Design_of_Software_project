@@ -10,7 +10,47 @@ public class Main {
 
 
     public static void main(String[] args) {
+        System1 s1=new System1();
+        Scanner in = new Scanner(System.in);
+        System.out.println("Please enter command: ");
+        String msg = in.nextLine();
+        /*
+        String[] splited = msg.split("\\s+");
+        String First_Command=splited[0];
+        String Second_Command=splited[1];
+        String input=splited[2];
+        for (String s :splited)
+            System.out.println(s);
+         */
+        switch (msg) {
+            case "Add WebUser":  s1.Add_WebUser("1234");
+                break;
+            case "Remove WebUser":  s1.Remove_Webuser("1234");
+                break;
+            case "Login WebUser" :  s1.Login("1234");
+                break;
+            case"Logout WebUser": s1.LogOut();
+                break;
+            case "Make order":  s1.MakeOrder();
+                break;
+            case "Display order":s1.Display_Order();
+                break;
+            case "Link Product":  s1.Link_Product("1234");
+                break;
+            case "Add Product":  s1.AddProduct();
+                break;
+            case "Delete Product" : s1.Delete_Product("1234");
+                break;
+            case "ShowAllObjects": s1.Show_all_Objects();
+                break;
+            case "ShowObjectId":s1.Show_object_id(1234);
+                break;
 
+        }
+        System.out.println("finish");
+    }
+}
+/*
         System1 s1=new System1();
         s1.AddProduct();
         s1.Add_WebUser("Guy");///todo add args[2] input from cmd
@@ -35,6 +75,5 @@ public class Main {
         System.out.println(p.getId());
         }
     }
-
-
+*/
 
