@@ -58,26 +58,32 @@ public class System1 {
         Account NewAccount = null;
         System.out.println("Are you a Premium User? (y/n)");
         String YesOrNo = s.nextLine();
-        switch (YesOrNo) {
-            case "y":
-                NewAccount = new PremiumAccount(ID, "new addressi", false, new Date(), null,
-                        0, newCustomer, null);
-                newCustomer.SetAccount(NewAccount);
-                break;
-            case "n":
-                NewAccount = new Account(ID, "newAddres", false, new Date(), null,
-                        0, newCustomer, null);
-                newCustomer.SetAccount(NewAccount);
-                break;
+        boolean accepted = false;
+        while(!accepted) {
+            switch (YesOrNo) {
+                case "y":
+                    NewAccount = new PremiumAccount(ID, "new addressi", false, new Date(), null,
+                            0, newCustomer, null);
+                    newCustomer.SetAccount(NewAccount);
+                    accepted = true;
+                    break;
+                case "n":
+                    NewAccount = new Account(ID, "newAddres", false, new Date(), null,
+                            0, newCustomer, null);
+                    newCustomer.SetAccount(NewAccount);
+                    accepted = true;
+                    break;
 
-            default:
-                System.out.println("Are you a Premium User? (y/n)");
-                YesOrNo = s.nextLine();
+                default:
+                    System.out.println("Are you a Premium User? (y/n)");
+                    YesOrNo = s.nextLine();
+
+            }
         }
 
         WebUser myUser = new WebUser(ID, Pass, UserState.New, newCustomer);
         this.Webusers.put(ID, myUser);
-        ShoppingCart shop1 = new ShoppingCart(new Date(2020, 9, 9), myUser, NewAccount);
+        ShoppingCart shop1 = new ShoppingCart(new Date(2020, 11, 9), myUser, NewAccount);
         if (NewAccount != null) {
             NewAccount.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
@@ -94,21 +100,37 @@ public class System1 {
     }
     public void Login(String Login_id) {
         if (this.Webusers.get(Login_id) == null) {
-            System.out.println("The user is not exist!!");
-        } else if (this.CurrentWebUser == null) {
+            System.out.println("Username is incorrect / doesn't exist - try again");
+        }
+        else if (this.CurrentWebUser == null) {
             Scanner s = new Scanner(System.in);
             System.out.println("Please enter your Password");
             String Pass = s.nextLine();
             if (this.Webusers.get(Login_id).getPassword().equals(Pass)) {
-                System.out.println("Great success!! Very nice!");
+
                 this.CurrentWebUser = this.Webusers.get(Login_id);
+                System.out.println("Login successful - Welcome Back!!");
             }
-        } else
+            else{
+                System.out.println("Password is incorrect - try again");
+            }
+        }
+        else
             System.out.println("Someone is already logged in");
     }
 
-    public void LogOut() {
-        this.CurrentWebUser = null;
+    public void LogOut(String userToLogout) {
+        if(this.CurrentWebUser == null) {
+            System.out.println("No one is connected right now");
+        }
+        else if( !this.CurrentWebUser.getLogin_id().equals(userToLogout)){
+            System.out.println(userToLogout+" is not connected right now");
+        }
+        else{
+                this.CurrentWebUser = null;
+                System.out.println("Logout complete");
+            }
+
     }
     public void order() {
     }
@@ -211,7 +233,7 @@ public class System1 {
 
     public void Link_Product(String product) {
         if (this.CurrentWebUser == null) {
-            System.out.println("Cannot link a product while no user id connected");
+            System.out.println("Cannot link a product while no user connected");
             return;
         }
         if (this.CurrentWebUser.getCustomer().getAccount() instanceof PremiumAccount) {
@@ -338,7 +360,7 @@ public class System1 {
     public void Show_object_id(int id) {
         Object obj = AllObjInSys_id.get(id);
         System.out.println(obj.getClass().getName() + " ID: " + id);
-        obj.toString();
+        System.out.println(obj.toString());
     }
 
     public void Set_Supplier(String id, String name) {

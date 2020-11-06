@@ -12,7 +12,7 @@ public class Main {
         ///todo add manual Constructor to WebUser
         Scanner in = new Scanner(System.in);
         while (true) {
-            System.out.println("Please enter command: ....if you want to stop enter Exit");
+            System.out.println("\nPlease enter command: (If you wish to exit - type 'Exit')");
             String msg = in.nextLine();
             String[] splited = msg.split("\\s+");
             int Length = splited.length;
@@ -30,32 +30,30 @@ public class Main {
                         s1.Show_all_Objects();
                         break;
                     }
-                    if (First_Command.equals("ShowObjectId")) {
-                        s1.Show_object_id(Integer.parseInt(Third_input));
-                        break;
-                    }
+
+
                     if (First_Command.equals("Exit")) {
                         System.out.println("Goodbye!");
                         return;
                     }
                 case 2:
-                    if (First_Command.equals("LogOut") && Second_Command.equals("WebUser"))
-                    {
-                        s1.LogOut();
+                    if (First_Command.equals("ShowObjectId")) {
+                        s1.Show_object_id(Integer.parseInt(Second_Command));
                         break;
                     }
-                if (First_Command.equals("Make") && Second_Command.equals("order")) {
-                        s1.MakeOrder();
-                        break;
-                }
-                if (First_Command.equals("Display") && Second_Command.equals("order")) {
-                    s1.Display_Order();
-                    break;
-                }
-                    if (First_Command.equals("Add") && Second_Command.equals("Product")) {
-                        s1.AddProduct();
+
+                    if (First_Command.equals("Make") && Second_Command.equals("order")) {
+                            s1.MakeOrder();
+                            break;
+                    }
+                    if (First_Command.equals("Display") && Second_Command.equals("order")) {
+                        s1.Display_Order();
                         break;
                     }
+                        if (First_Command.equals("Add") && Second_Command.equals("Product")) {
+                            s1.AddProduct();
+                            break;
+                        }
                 case 3:
                     if (First_Command.equals("Add") && Second_Command.equals("WebUser")) {
                         s1.Add_WebUser(Third_input);
@@ -67,6 +65,11 @@ public class Main {
                     }
                     if (First_Command.equals("Login") && Second_Command.equals("WebUser")) {
                         s1.Login(Third_input);
+                        break;
+                    }
+                    if (First_Command.equals("Logout") && Second_Command.equals("WebUser"))
+                    {
+                        s1.LogOut(Third_input);
                         break;
                     }
                     if (First_Command.equals("Link") && Second_Command.equals("Product")) {
