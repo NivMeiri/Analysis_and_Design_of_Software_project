@@ -12,7 +12,7 @@ public class System1 {
     private Vector<Order> Oreders;
     private HashMap<String, Supplier> Suppliers;
     private Vector<Product> Products;
-    //todo: Check if deleting from dicts - while deleting webUser OR product - is working. if function 10 isnt printing them.
+    //todo- Check if deleting from dicts - while deleting webUser OR product - is working. if function 10 isnt printing them.
     static HashMap<Object, Integer> AllObjInSys_obj;
     static HashMap<Integer, Object> AllObjInSys_id;
     private Vector<Account> Accounts;
