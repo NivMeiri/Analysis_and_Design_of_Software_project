@@ -154,12 +154,11 @@ public class System1 {
             String name = sciny.nextLine();
             MyWeb = this.Webusers.get(name);//using the hashmap
             if (MyWeb == null)
-                System.out.println("Please enter valid name");
+                System.out.println("The WebUser  is not exist, please try again");
             else if (!(MyWeb.getCustomer().getAccount() instanceof PremiumAccount))
                 System.out.println("You can only order from a premium account");
             else
                 break;
-
         }
         PremiumAccount premiumUser = (PremiumAccount) MyWeb.getCustomer().getAccount();
         premiumUser.printProducts();
@@ -168,7 +167,6 @@ public class System1 {
             System.out.println("The WebUser has no products");
             return;
         }
-
         System.out.println("Would you like to order one of the products? (y/n)");
         String ans = sciny.nextLine();
         while (ans.equals("y")) {
@@ -183,8 +181,10 @@ public class System1 {
                         break;
                     }
                 }
-                if (UserItem == null)
-                    System.out.println("Please enter a valid name!");
+                if (UserItem == null) {
+                    System.out.println("There is no product with this name!");
+                    return;
+                }
             }
             while (true) {
                 System.out.println("How many units do you want?");
@@ -194,9 +194,22 @@ public class System1 {
                         System.out.println("You don't have enough money, try ordering less");
                         break;
                     }
+                    else{
+                        LineItem myItem = new LineItem(num, UserItem.getPrice(), this.CurrentWebUser.getShoppingCart(), myOrder, UserItem);
+                        UserItem.setAmount(UserItem.getAmount() - num);
+                        myOrder.addLineItem(myItem);
+                        myOrder.setTotal(myOrder.getTotal() + myItem.getPrice() * num);
+                        this.CurrentWebUser.getShoppingCart().addLineItem(myItem);
+                        System.out.println("Would you like to order something else? y/n");
+                        ans = sciny.nextLine();
+                        if ( ans.equals("n")){
+                            return;
+                        }
+                    }
+
                 }
                 else {
-                    System.out.println("The amount of this product is"+UserItem.getAmount()+"and you asked for amount of"+num);
+                    System.out.println("The amount of this product is :  "+UserItem.getAmount()+" and you asked for amount of :  "+num);
                     break;
                 }
                 System.out.println("Do  you want to exit or continue to try ordering ?  y/n");
@@ -208,16 +221,7 @@ public class System1 {
                     break;
                 }
             }
-            LineItem myItem = new LineItem(num, UserItem.getPrice(), this.CurrentWebUser.getShoppingCart(), myOrder, UserItem);
-            UserItem.setAmount(UserItem.getAmount() - num);
-            myOrder.addLineItem(myItem);
-            myOrder.setTotal(myOrder.getTotal() + myItem.getPrice() * num);
-            this.CurrentWebUser.getShoppingCart().addLineItem(myItem);
-            System.out.println("Would you like to order something else? y/n");
-            ans = sciny.nextLine();
-            if ( ans.equals("n")){
-                return;
-            }
+
         }
         System.out.println("Do you want to pay now? y/n");
         ans = sciny.nextLine();

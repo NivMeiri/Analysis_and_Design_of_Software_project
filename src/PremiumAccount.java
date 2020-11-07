@@ -134,7 +134,7 @@ public class PremiumAccount extends Account
 
   public void printProducts(){
     for(int i=0;i<this.products.size();i++){
-      System.out.println(i+")"+products.get(i).getName()+":"+products.get(i).getAmount());
+      System.out.println(i+")"+products.get(i).getName()+":  qty: "+products.get(i).getAmount()+"  price: "+products.get(i).getPrice());
     }
   }
 
