@@ -134,13 +134,12 @@ public class System1 {
     }
     public void order() {
     }
-
     public void MakeOrder() {
         if (this.CurrentWebUser == null) {
             System.out.println("Cannot order without user logged in");
             return;
         }
-        if(this.CurrentWebUser.getCustomer().getAccount().getBalance() ==0 ) {
+        if(this.CurrentWebUser.getCustomer().getAccount().getBalance() <1 ) {
             System.out.println("Cannot make orders while balance is empty");
             return;
         }
