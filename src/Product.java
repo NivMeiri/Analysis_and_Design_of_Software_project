@@ -61,7 +61,10 @@ public class Product
   }
   public int getAmount(){return this.amount;}
   public int getPrice(){return this.price;}
-  public void setAmount(int a){this.amount=a;}
+  public void setAmount(int a){
+
+    this.amount=a;}
+
   public void setPrice(int p){this.price=p;}
 
   public String getId()

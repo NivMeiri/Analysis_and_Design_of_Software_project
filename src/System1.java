@@ -6,7 +6,7 @@ import java.util.Date;
 public class System1 {
     private WebUser CurrentWebUser = null;
     private Order LastOreder = null;
-    private int OrderNum = 0;
+    private int OrderNum = 1;
     static int Static_Id = 1;
     private HashMap<String, WebUser> Webusers;
     private Vector<Order> Oreders;
@@ -70,7 +70,7 @@ public class System1 {
             switch (YesOrNo) {
                 case "y":
                     NewAccount = new PremiumAccount(ID, "new addressi", false, new Date(), null,
-                            0, newCustomer, null);
+                            100, newCustomer, null);
                     newCustomer.SetAccount(NewAccount);
                     accepted = true;
                     break;
@@ -112,9 +112,7 @@ public class System1 {
         System.out.println(myUser.toString());
         System.out.println(newCustomer.toString());
     }
-
     public void Remove_Webuser(String Login_id) {
-
         WebUser userToRemove = this.Webusers.get(Login_id);
         this.Webusers.get(Login_id).delete();
     }
@@ -160,7 +158,7 @@ public class System1 {
             System.out.println("Cannot order without user logged in");
             return;
         }
-        if(this.CurrentWebUser.getCustomer().getAccount().getBalance() <1 ) {
+        if(!(this.CurrentWebUser.getCustomer().getAccount().getBalance() >0 )) {
             System.out.println("Cannot make orders while balance is empty");
             return;
         }
@@ -172,7 +170,6 @@ public class System1 {
         Static_Id++;
         //-------------------------------------------------
         Scanner sciny = new Scanner(System.in);
-        /// TODO CHECK IF THE WEBUSER EXIST ///
         WebUser MyWeb;
         while (true) {
             System.out.println("Who would you like to order from?: ");
@@ -187,7 +184,6 @@ public class System1 {
         }
         PremiumAccount premiumUser = (PremiumAccount) MyWeb.getCustomer().getAccount();
         premiumUser.printProducts();
-        /// TODO CHECK IF THERE IS A PRODUCTS ///
         if (premiumUser.numberOfProducts() == 0) {
             System.out.println("The WebUser has no products");
             return;
@@ -211,11 +207,12 @@ public class System1 {
                     return;
                 }
             }
-            while (true) {
+            int Amount_flag=0;
+            while (Amount_flag==0) {
                 System.out.println("How many units do you want?");
                 num = Integer.parseInt(sciny.nextLine());
                 if (UserItem.getAmount() >= num) {
-                    if (myOrder.getTotal() + (UserItem.getPrice() * num) <= this.CurrentWebUser.getCustomer().getAccount().getBalance()) {
+                    if ((myOrder.getTotal()+ (UserItem.getPrice() * num)) > this.CurrentWebUser.getCustomer().getAccount().getBalance()) {
                         System.out.println("You don't have enough money, try ordering less");
                         break;
                     }
@@ -226,39 +223,32 @@ public class System1 {
                         AllObjInSys_id.put(Static_Id,myItem);
                         Static_Id++;
                         //-------------------------------------------------
-                        UserItem.setAmount(UserItem.getAmount() - num);
+                        if(UserItem.getAmount()==num){
+                            premiumUser.removeProduct(UserItem);
+                        }
+                        else {
+                            UserItem.setAmount(UserItem.getAmount() - num);
+                        }
                         myOrder.addLineItem(myItem);
                         myOrder.setTotal(myOrder.getTotal() + myItem.getPrice() * num);
                         this.CurrentWebUser.getShoppingCart().addLineItem(myItem);
                         System.out.println("Would you like to order something else? y/n");
+                        Amount_flag=1;
                         ans = sciny.nextLine();
-                        if ( ans.equals("n")){
-                            return;
-                        }
-                    }
 
+                    }
                 }
                 else {
                     System.out.println("The amount of this product is :  "+UserItem.getAmount()+" and you asked for amount of :  "+num);
                     break;
                 }
-                System.out.println("Do  you want to exit or continue to try ordering ?  y/n");
-                String enter = sciny.nextLine();
-                if (enter.equals("n")) {
-                    return;
-                }
-                if (enter.equals("y")) {
-                    break;
-                }
             }
-
         }
-        System.out.println("Do you want to pay now? y/n");
+        System.out.println("Do you want to pay now(y) or to pay with DelayedPayment(n)?....y/n");
         ans = sciny.nextLine();
         Payment myPayment;
         switch (ans) {
             case "y":
-
                 myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), new Date(2020, 7, 7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, true);
                 //----------insert to Dicts & increasing static----
                 AllObjInSys_obj.put(myPayment,Static_Id);
@@ -267,6 +257,7 @@ public class System1 {
                 //-------------------------------------------------
                 myPayment.make_payment();
                 myOrder.addPayment(myPayment);
+                System.out.println("This is immediate payment");
                 break;
             case "n":
                 System.out.println("When do you want to pay?");
@@ -276,16 +267,23 @@ public class System1 {
                 String month = sciny.nextLine();
                 System.out.println("insert year between 2020-2021:");
                 String year = sciny.nextLine();
-                myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(), new Date(2020, 3, 7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, new Date(2020, 9, 9));
+                myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(), new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, new Date(2020, 9, 9));
                 //----------insert to Dicts & increasing static----
                 AllObjInSys_obj.put(myPayment,Static_Id);
                 AllObjInSys_id.put(Static_Id,myPayment);
                 Static_Id++;
                 //-------------------------------------------------
+                System.out.println("This is Delayed payment");
                 myOrder.addPayment(myPayment);
                 break;
             default:
         }
+        System.out.println("your order success!! you ordered :");
+        for (int i = 0; i <myOrder.numberOfLineItems() ; i++) {
+            System.out.println(myOrder.getLineItem(i).toString());
+        }
+        System.out.println("you charged for :"+myOrder.getTotal()+"your account  balance now is  : "+CurrentWebUser.getCustomer().getAccount().getBalance());
+
     }
 
     public void Check_Func() {
