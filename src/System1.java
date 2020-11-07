@@ -268,6 +268,7 @@ public class System1 {
                 System.out.println("insert year between 2020-2021:");
                 String year = sciny.nextLine();
                 myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(), new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, new Date(2020, 9, 9));
+                myPayment.make_payment();
                 //----------insert to Dicts & increasing static----
                 AllObjInSys_obj.put(myPayment,Static_Id);
                 AllObjInSys_id.put(Static_Id,myPayment);
