@@ -69,7 +69,7 @@ public class System1 {
                     break;
                 case "n":
                     NewAccount = new Account(ID, "newAddres", false, new Date(), null,
-                            0, newCustomer, null);
+                            100, newCustomer, null);
                     newCustomer.SetAccount(NewAccount);
                     accepted = true;
                     break;
@@ -83,7 +83,7 @@ public class System1 {
 
         WebUser myUser = new WebUser(ID, Pass, UserState.New, newCustomer);
         this.Webusers.put(ID, myUser);
-        ShoppingCart shop1 = new ShoppingCart(new Date(2020, 11, 9), myUser, NewAccount);
+        ShoppingCart shop1 = new ShoppingCart(new Date(), myUser, NewAccount);
         if (NewAccount != null) {
             NewAccount.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
@@ -140,6 +140,10 @@ public class System1 {
             System.out.println("Cannot order without user logged in");
             return;
         }
+        if(this.CurrentWebUser.getCustomer().getAccount().getBalance() ==0 ) {
+            System.out.println("Cannot make orders while balance is empty");
+            return;
+        }
         Order myOrder = new Order(String.valueOf(OrderNum), new Date(), null, this.CurrentWebUser.getCustomer().getAddress(), OrderStatus.New, 0, this.CurrentWebUser.getCustomer().getAccount());
         OrderNum++;
         Scanner sciny = new Scanner(System.in);
@@ -165,9 +169,9 @@ public class System1 {
             return;
         }
 
-        System.out.println("Would you like to order one of our products? (y/n)");
+        System.out.println("Would you like to order one of the products? (y/n)");
         String ans = sciny.nextLine();
-        while (ans == "y") {
+        while (ans.equals("y")) {
             System.out.println("What product do you want to add to your Cart?: ");
             String item = sciny.nextLine();
             Product UserItem = null;
@@ -186,11 +190,22 @@ public class System1 {
                 System.out.println("How many units do you want?");
                 num = Integer.parseInt(sciny.nextLine());
                 if (UserItem.getAmount() >= num) {
-                    if (myOrder.getTotal() + (UserItem.getPrice() * num) < this.CurrentWebUser.getCustomer().getAccount().getBalance())
+                    if (myOrder.getTotal() + (UserItem.getPrice() * num) <= this.CurrentWebUser.getCustomer().getAccount().getBalance()) {
+                        System.out.println("You don't have enough money, try ordering less");
                         break;
-                    System.out.println("You don't have enough money, try ordering less");
-                } else {
-                    System.out.println("Please enter valid number!");
+                    }
+                }
+                else {
+                    System.out.println("The amount of this product is"+UserItem.getAmount()+"and you asked for amount of"+num);
+                    break;
+                }
+                System.out.println("Do  you want to exit or continue to try ordering ?  y/n");
+                String enter = sciny.nextLine();
+                if (enter.equals("n")) {
+                    return;
+                }
+                if (enter.equals("y")) {
+                    break;
                 }
             }
             LineItem myItem = new LineItem(num, UserItem.getPrice(), this.CurrentWebUser.getShoppingCart(), myOrder, UserItem);
@@ -200,6 +215,9 @@ public class System1 {
             this.CurrentWebUser.getShoppingCart().addLineItem(myItem);
             System.out.println("Would you like to order something else? y/n");
             ans = sciny.nextLine();
+            if ( ans.equals("n")){
+                return;
+            }
         }
         System.out.println("Do you want to pay now? y/n");
         ans = sciny.nextLine();
@@ -323,36 +341,36 @@ public class System1 {
     }
 
     public void Show_all_Objects() {
-        System.out.println("| Object |  id  |  name  |");
+        System.out.println("| Object   | id | name  |");
         Set<Object> objArr = AllObjInSys_obj.keySet();
         for (Object obj : this.AllObjInSys_obj.keySet()) {
             if (obj instanceof Product) {
-                System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + " | " + ((Product) obj).getName() + " |");
+                System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + "  | " + ((Product) obj).getName() + " |");
             } else if (obj instanceof Order) {
-                System.out.println("| Order | " + AllObjInSys_obj.get(obj) + " | " + ((Order) obj).getNumber() + " |");
+                System.out.println("| Order | " + AllObjInSys_obj.get(obj) + "  | " + ((Order) obj).getNumber() + " |");
             } else if (obj instanceof WebUser) {
-                System.out.println("| WebUser | " + AllObjInSys_obj.get(obj) + " | " + ((WebUser) obj).getLogin_id() + " |");
+                System.out.println("| WebUser | " + AllObjInSys_obj.get(obj) + "  | " + ((WebUser) obj).getLogin_id() + " |");
             } else if (obj instanceof Customer) {
-                System.out.println("| Customer | " + AllObjInSys_obj.get(obj) + " | " + ((Customer) obj).getId() + " |");
+                System.out.println("| Customer | " + AllObjInSys_obj.get(obj) + "  | " + ((Customer) obj).getId() + " |");
             } else if (obj instanceof ShoppingCart) {
-                System.out.println("| Shopping Cart | " + AllObjInSys_obj.get(obj) + " | " + ((ShoppingCart) obj).getCretaed() + " |");
+                System.out.println("| Shopping Cart | " + AllObjInSys_obj.get(obj) + "  | " + ((ShoppingCart) obj).getCretaed() + " |");
             } else if (obj instanceof Account) {
-                System.out.println("| Account | " + AllObjInSys_obj.get(obj) + " | " + ((Account) obj).getID() + " |");
+                System.out.println("| Account | " + AllObjInSys_obj.get(obj) + "  | " + ((Account) obj).getID() + " |");
             } else if (obj instanceof PremiumAccount) {
-                System.out.println("| PremiumAccount | " + AllObjInSys_obj.get(obj) + " | " + ((PremiumAccount) obj).getID() + " |");
+                System.out.println("| PremiumAccount | " + AllObjInSys_obj.get(obj) + "  | " + ((PremiumAccount) obj).getID() + " |");
             } else if (obj instanceof LineItem) {
-                System.out.println("| LineItem | " + AllObjInSys_obj.get(obj) + " | " + ((LineItem) obj).getProduct().getName() + " |");
+                System.out.println("| LineItem | " + AllObjInSys_obj.get(obj) + "  | " + ((LineItem) obj).getProduct().getName() + " |");
             } else if (obj instanceof Payment) {
-                System.out.println("| Payment | " + AllObjInSys_obj.get(obj) + " | " + ((Payment) obj).getId() + " |");
+                System.out.println("| Payment | " + AllObjInSys_obj.get(obj) + "  | " + ((Payment) obj).getId() + " |");
             } else if (obj instanceof DelayedPayment) {
-                System.out.println("| DelayedPayment | " + AllObjInSys_obj.get(obj) + " | " + ((DelayedPayment) obj).getId() + " |");
+                System.out.println("| DelayedPayment | " + AllObjInSys_obj.get(obj) + "  | " + ((DelayedPayment) obj).getId() + " |");
             } else if (obj instanceof ImmediatePayment) {
-                System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + " | " + ((ImmediatePayment) obj).getId() + " |");
+                System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + "  | " + ((ImmediatePayment) obj).getId() + " |");
             } else if (obj instanceof Address) {
-                System.out.println("| Address | " + AllObjInSys_obj.get(obj) + " | " + ((Address) obj).getZipCode() + " |");
+                System.out.println("| Address | " + AllObjInSys_obj.get(obj) + "  | " + ((Address) obj).getZipCode() + " |");
             }
             else if (obj instanceof Supplier) {
-                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + " | " + ((Supplier) obj).getId() + " |"+((Supplier)obj).getName()+ " |");
+                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + "  | " + ((Supplier) obj).getId() + " |"+((Supplier)obj).getName()+ " |");
             }
         }
     }
