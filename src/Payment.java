@@ -155,6 +155,11 @@ public abstract class Payment
   }
   public void delete()
   {
+    //----Deleting from Dicts.
+    int myId = System1.AllObjInSys_obj.get(this);
+    System1.AllObjInSys_obj.remove(this);
+    System1.AllObjInSys_id.remove(myId);
+    //------------------------
     Account placeholderAccount = account;
     this.account = null;
     if(placeholderAccount != null)

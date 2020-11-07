@@ -364,6 +364,11 @@ public class Account
 
   public void delete()
   {
+    //----Deleting from Dicts.
+    int myId = System1.AllObjInSys_obj.get(this);
+    System1.AllObjInSys_obj.remove(this);
+    System1.AllObjInSys_id.remove(myId);
+    //------------------------
     Customer existingCustomer = customer;
     customer = null;
     if (existingCustomer != null)
