@@ -12,9 +12,9 @@ public class System1 {
     private Vector<Order> Oreders;
     private HashMap<String, Supplier> Suppliers;
     private Vector<Product> Products;
-    // todo when adding object to the
-    private HashMap<Object, Integer> AllObjInSys_obj;
-    private HashMap<Integer, Object> AllObjInSys_id;
+    //todo: Check if deleting from dicts - while deleting webUser OR product - is working. if function 10 isnt printing them.
+    static HashMap<Object, Integer> AllObjInSys_obj;
+    static HashMap<Integer, Object> AllObjInSys_id;
     private Vector<Account> Accounts;
     private Vector<Customer> Customers ;
 
@@ -47,14 +47,21 @@ public class System1 {
         System.out.println("Please enter your address: ");
         String Address = s.nextLine();
         Address newAddress = new Address(Address);          /////TODO fix here///////
+        //----------Insert to Dicts & increasing static----
+        AllObjInSys_obj.put(newAddress,Static_Id);
+        AllObjInSys_id.put(Static_Id,newAddress);
+        Static_Id++;
+        //-------------------------------------------------
         System.out.println("Please enter your Phone Number: ");
         String pNumber = s.nextLine();
         System.out.println("Please enter your Email: ");
         String eMail = s.nextLine();
         Customer newCustomer = new Customer(ID, newAddress, pNumber, eMail, null);
+        //----------Insert to Dicts & increasing static----
         this.AllObjInSys_id.put(Static_Id,newCustomer);
         this.AllObjInSys_obj.put(newCustomer,Static_Id);
         Static_Id+=1;
+        //-------------------------------------------------
         Account NewAccount = null;
         System.out.println("Are you a Premium User? (y/n)");
         String YesOrNo = s.nextLine();
@@ -80,10 +87,24 @@ public class System1 {
 
             }
         }
-
+        //----------Insert to Dicts & increasing static----
+        AllObjInSys_obj.put(NewAccount,Static_Id);
+        AllObjInSys_id.put(Static_Id,NewAccount);
+        Static_Id++;
+        //-------------------------------------------------
         WebUser myUser = new WebUser(ID, Pass, UserState.New, newCustomer);
         this.Webusers.put(ID, myUser);
+        //----------Insert to Dicts & increasing static----
+        AllObjInSys_obj.put(myUser,Static_Id);
+        AllObjInSys_id.put(Static_Id,myUser);
+        Static_Id++;
+        //-------------------------------------------------
         ShoppingCart shop1 = new ShoppingCart(new Date(), myUser, NewAccount);
+        //----------Insert to Dicts & increasing static----
+        AllObjInSys_obj.put(shop1,Static_Id);
+        AllObjInSys_id.put(Static_Id,shop1);
+        Static_Id++;
+        //-------------------------------------------------
         if (NewAccount != null) {
             NewAccount.setShoppingCart(shop1);
             myUser.setShoppingCart(shop1);
@@ -95,9 +116,9 @@ public class System1 {
     public void Remove_Webuser(String Login_id) {
 
         WebUser userToRemove = this.Webusers.get(Login_id);
-
         this.Webusers.get(Login_id).delete();
     }
+
     public void Login(String Login_id) {
         if (this.Webusers.get(Login_id) == null) {
             System.out.println("Username is incorrect / doesn't exist - try again");
@@ -146,6 +167,11 @@ public class System1 {
         }
         Order myOrder = new Order(String.valueOf(OrderNum), new Date(), null, this.CurrentWebUser.getCustomer().getAddress(), OrderStatus.New, 0, this.CurrentWebUser.getCustomer().getAccount());
         OrderNum++;
+        //----------insert to Dicts & increasing static----
+        AllObjInSys_obj.put(myOrder,Static_Id);
+        AllObjInSys_id.put(Static_Id,myOrder);
+        Static_Id++;
+        //-------------------------------------------------
         Scanner sciny = new Scanner(System.in);
         /// TODO CHECK IF THE WEBUSER EXIST ///
         WebUser MyWeb;
@@ -196,6 +222,11 @@ public class System1 {
                     }
                     else{
                         LineItem myItem = new LineItem(num, UserItem.getPrice(), this.CurrentWebUser.getShoppingCart(), myOrder, UserItem);
+                        //----------insert to Dicts & increasing static----
+                        AllObjInSys_obj.put(myItem,Static_Id);
+                        AllObjInSys_id.put(Static_Id,myItem);
+                        Static_Id++;
+                        //-------------------------------------------------
                         UserItem.setAmount(UserItem.getAmount() - num);
                         myOrder.addLineItem(myItem);
                         myOrder.setTotal(myOrder.getTotal() + myItem.getPrice() * num);
@@ -230,6 +261,11 @@ public class System1 {
             case "y":
 
                 myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), new Date(2020, 7, 7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, true);
+                //----------insert to Dicts & increasing static----
+                AllObjInSys_obj.put(myPayment,Static_Id);
+                AllObjInSys_id.put(Static_Id,myPayment);
+                Static_Id++;
+                //-------------------------------------------------
                 myPayment.make_payment();
                 myOrder.addPayment(myPayment);
                 break;
@@ -242,6 +278,11 @@ public class System1 {
                 System.out.println("insert year between 2020-2021:");
                 String year = sciny.nextLine();
                 myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(), new Date(2020, 3, 7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, new Date(2020, 9, 9));
+                //----------insert to Dicts & increasing static----
+                AllObjInSys_obj.put(myPayment,Static_Id);
+                AllObjInSys_id.put(Static_Id,myPayment);
+                Static_Id++;
+                //-------------------------------------------------
                 myOrder.addPayment(myPayment);
                 break;
             default:
@@ -307,6 +348,11 @@ public class System1 {
             System.out.println("Please enter Supplier name\n");
             String name = s.nextLine();
             tmpSup = new Supplier(id, name);
+            //----------insert to Dicts & increasing static----
+            AllObjInSys_obj.put(tmpSup,Static_Id);
+            AllObjInSys_id.put(Static_Id,tmpSup);
+            Static_Id++;
+            //-------------------------------------------------
             Suppliers.put(id, tmpSup);
         } else {
             tmpSup = Suppliers.get(id);
@@ -319,6 +365,11 @@ public class System1 {
         String price = s.nextLine();
         ///todo add input check
         Product newProduct = new Product(productid, productName, tmpSup, Integer.parseInt(price));
+        //----------insert to Dicts & increasing static----
+        AllObjInSys_obj.put(newProduct,Static_Id);
+        AllObjInSys_id.put(Static_Id,newProduct);
+        Static_Id++;
+        //-------------------------------------------------
         System.out.println("New product added\n");
         Products.add(newProduct);
         tmpSup.addProduct(productid, productName);

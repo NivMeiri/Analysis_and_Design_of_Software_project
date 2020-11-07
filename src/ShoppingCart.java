@@ -219,6 +219,11 @@ public class ShoppingCart
   {
     WebUser existingWebUser = webUser;
     webUser = null;
+    //----Deleting from Dicts.
+    int myId = System1.AllObjInSys_obj.get(this);
+    System1.AllObjInSys_obj.remove(this);
+    System1.AllObjInSys_id.remove(myId);
+    //------------------------
     if (existingWebUser != null)
     {
       existingWebUser.setShoppingCart(null);
