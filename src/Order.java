@@ -399,7 +399,7 @@ public class Order
             "total" + ":" + getTotal()+ "]";
     String Conn2Obj = "\nOrdered" + "=" + ordered.toString()
             + "\nShipped" + "=" +  shipped.toString()
-            +"\nShip_to" + "=" + ship_to.getZipCode()
+            +"\nShip_to" + "=" + ship_to.toString()
             +"\nStatus" + "=" + Status.toString()
             +"\nAccount = "+ account.getID();
     String Pay2Obj = "";

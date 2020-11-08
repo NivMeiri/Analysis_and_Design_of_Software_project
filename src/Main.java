@@ -9,6 +9,7 @@ public class Main {
         s1.Set_Supplier("123","Moshe");
         s1.Set_Product("Ramen","Ramen",s1.get_Supplier("123"),100);
         s1.Set_Product("Bamba","Bamba",s1.get_Supplier("123"),89);
+
         ///todo add manual Constructor to WebUser
         Scanner in = new Scanner(System.in);
         while (true) {

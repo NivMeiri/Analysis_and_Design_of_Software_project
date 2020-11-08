@@ -4,12 +4,10 @@
 
 import java.util.Date;
 import java.util.*;
-
 // line 24 "model.ump"
 // line 121 "model.ump"
 public class Account
 {
-
   //------------------------
   // MEMBER VARIABLES
   //------------------------
@@ -380,12 +378,7 @@ public class Account
       Payment aPayment = payments.get(i - 1);
       aPayment.delete();
     }
-    ShoppingCart existingShoppingCart = shoppingCart;
-    shoppingCart = null;
-    if (existingShoppingCart != null)
-    {
-      existingShoppingCart.delete();
-    }
+
     while (orders.size() > 0)
     {
       Order aOrder = orders.get(orders.size() - 1);

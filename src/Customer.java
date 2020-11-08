@@ -156,20 +156,16 @@ public class Customer
     WebUser existingWebUser = webUser;
     webUser = null;
     //----Deleting from Dicts.
-    int myId = System1.AllObjInSys_obj.get(this);
-    System1.AllObjInSys_obj.remove(this);
-    System1.AllObjInSys_id.remove(myId);
+      int myId = System1.AllObjInSys_obj.get(this);
+      System1.AllObjInSys_obj.remove(this);
+      System1.AllObjInSys_id.remove(myId);
+
+      myId = System1.AllObjInSys_obj.get(Address);
+      System1.AllObjInSys_obj.remove(Address);
+      System1.AllObjInSys_id.remove(myId);
     //------------------------
-    if (existingWebUser != null)
-    {
-      existingWebUser.delete();
-    }
-    Account existingAccount = account;
-    account = null;
-    if (existingAccount != null)
-    {
-      existingAccount.delete();
-    }
+
+
   }
 
 
@@ -180,7 +176,7 @@ public class Customer
             "phone" + ":" + getPhone()+ ", " +
             "email" + ":" + getEmail()+ "]";
     String Conn2Obj =
-            "\nAddress" + "=" + Address.getZipCode()+
+            "\nAddress" + "=" + Address.toString()+
             "\nWebUser = "+ webUser.getLogin_id()+
             "\nAccount = " + account.getID();
     return InfoAboutObj+Conn2Obj;

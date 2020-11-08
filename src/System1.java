@@ -114,7 +114,9 @@ public class System1 {
     }
     public void Remove_Webuser(String Login_id) {
         WebUser userToRemove = this.Webusers.get(Login_id);
-        this.Webusers.get(Login_id).delete();
+        userToRemove.delete();
+        this.Webusers.remove(Login_id);
+        System.out.println("WebUser was successfully deleted");
     }
 
     public void Login(String Login_id) {
@@ -249,7 +251,7 @@ public class System1 {
         Payment myPayment;
         switch (ans) {
             case "y":
-                myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), new Date(2020, 7, 7), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, true);
+                myPayment = new ImmediatePayment(this.CurrentWebUser.getLogin_id(), new Date(), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, true);
                 //----------insert to Dicts & increasing static----
                 AllObjInSys_obj.put(myPayment,Static_Id);
                 AllObjInSys_id.put(Static_Id,myPayment);
@@ -257,6 +259,7 @@ public class System1 {
                 //-------------------------------------------------
                 myPayment.make_payment();
                 myOrder.addPayment(myPayment);
+                myOrder.setShipped(new Date());
                 System.out.println("This is immediate payment");
                 break;
             case "n":
@@ -268,6 +271,7 @@ public class System1 {
                 System.out.println("insert year between 2020-2021:");
                 String year = sciny.nextLine();
                 myPayment = new DelayedPayment(this.CurrentWebUser.getLogin_id(), new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)), myOrder.getTotal(), "", MyWeb.getCustomer().getAccount(), myOrder, new Date(2020, 9, 9));
+                myOrder.setShipped(new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
                 myPayment.make_payment();
                 //----------insert to Dicts & increasing static----
                 AllObjInSys_obj.put(myPayment,Static_Id);
@@ -279,24 +283,22 @@ public class System1 {
                 break;
             default:
         }
-        System.out.println("your order success!! you ordered :");
+        System.out.println("your order succeeded!! you ordered :");
         for (int i = 0; i <myOrder.numberOfLineItems() ; i++) {
             System.out.println(myOrder.getLineItem(i).toString());
         }
-        System.out.println("you charged for :"+myOrder.getTotal()+"your account  balance now is  : "+CurrentWebUser.getCustomer().getAccount().getBalance());
+        System.out.println("you charged for : "+myOrder.getTotal()+" your account  balance now is  : "+CurrentWebUser.getCustomer().getAccount().getBalance());
 
     }
-
-    public void Check_Func() {
-        System.out.println("Working?");
-    }
-
 
     public void Link_Product(String product) {
         if (this.CurrentWebUser == null) {
             System.out.println("Cannot link a product while no user connected");
             return;
         }
+        if(Products.size()==0){
+            System.out.println("There are no available products");
+            return;}
         if (this.CurrentWebUser.getCustomer().getAccount() instanceof PremiumAccount) {
             for (int i = 0; i < Products.size(); i++) {
                 if (Products.get(i).getName().equals(product)) {
@@ -312,6 +314,8 @@ public class System1 {
                     return;
                 }
             }
+            System.out.println("Item doesn't exist");
+            return;
         }
         System.out.println("You are not a premium account");
     }
@@ -325,14 +329,22 @@ public class System1 {
             if (this.CurrentWebUser.getCustomer().getAccount().getOrders().size() < 1) {
                 System.out.println("The customer has no orders");
             } else {
-                Order o = this.CurrentWebUser.getCustomer().getAccount().getOrder(-1);/// check with Hadassa - if the new order will
-                /// be in the first or the last place in the list
-                System.out.println("Number " + o.getNumber() + "\n");
-                System.out.println("Ordered in " + o.getOrederd() + "\n");
-                System.out.println("Shipped in " + o.getShipped() + "\n");
-                System.out.println("Address " + o.getShip_to() + "\n");
-                System.out.println("Status " + o.getStatus() + "\n");
-                System.out.println("Total " + o.getTotal() + "\n");
+                int size = this.CurrentWebUser.getCustomer().getAccount().getOrders().size();
+                if( size >0) {
+
+
+                    Order o = this.CurrentWebUser.getCustomer().getAccount().getOrder(size - 1);/// check with Hadassa - if the new order will
+                    /// be in the first or the last place in the list
+                    System.out.println("Number " + o.getNumber() + "\n");
+                    System.out.println("Ordered in " + o.getOrederd() + "\n");
+                    System.out.println("Shipped in " + o.getShipped() + "\n");
+                    System.out.println("Address " + o.getShip_to() + "\n");
+                    System.out.println("Status " + o.getStatus() + "\n");
+                    System.out.println("Total " + o.getTotal() + "\n");
+                }
+                else{
+                    System.out.println("no orders to display");
+                }
             }
         }
     }
@@ -387,6 +399,9 @@ public class System1 {
                 p.delete();
             }
         }
+        if(foundAny){
+            System.out.println("Product was deleted successfully");
+        }
         //if name given isn't an existing product's name in system, then try again.
         if (!foundAny) {
             System.out.println("Product does not exist. Please try again");
@@ -396,7 +411,9 @@ public class System1 {
     public void Show_all_Objects() {
         System.out.println("| Object   | id | name  |");
         Set<Object> objArr = AllObjInSys_obj.keySet();
-        for (Object obj : this.AllObjInSys_obj.keySet()) {
+        int size=AllObjInSys_id.size();
+        for (int i=0;i<size;i++){
+            Object obj=AllObjInSys_id.get(i+1);
             if (obj instanceof Product) {
                 System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + "  | " + ((Product) obj).getName() + " |");
             } else if (obj instanceof Order) {
@@ -420,10 +437,10 @@ public class System1 {
             } else if (obj instanceof ImmediatePayment) {
                 System.out.println("| ImmediatePayment | " + AllObjInSys_obj.get(obj) + "  | " + ((ImmediatePayment) obj).getId() + " |");
             } else if (obj instanceof Address) {
-                System.out.println("| Address | " + AllObjInSys_obj.get(obj) + "  | " + ((Address) obj).getZipCode() + " |");
+                System.out.println("| Address | " + AllObjInSys_obj.get(obj) + "  | " + ((Address) obj).toString() + " |");
             }
             else if (obj instanceof Supplier) {
-                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + "  | " + ((Supplier) obj).getId() + " |"+((Supplier)obj).getName()+ " |");
+                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + "  | " + ((Supplier) obj).getId() +  " |");
             }
         }
     }

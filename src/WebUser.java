@@ -165,19 +165,18 @@ public class WebUser
     System1.AllObjInSys_obj.remove(this);
     System1.AllObjInSys_id.remove(myId);
     //------------------------
-    Customer existingCustomer = customer;
-    customer = null;
-    if (existingCustomer != null)
-    {
-      existingCustomer.setWebUser(null);
-      existingCustomer.delete();
-    }
     ShoppingCart existingShoppingCart = shoppingCart;
     shoppingCart = null;
     if (existingShoppingCart != null)
     {
       existingShoppingCart.delete();
     }
+
+
+
+    customer = null;
+
+
   }
 
 
