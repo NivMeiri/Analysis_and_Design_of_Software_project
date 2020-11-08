@@ -440,7 +440,7 @@ public class System1 {
                 System.out.println("| Address | " + AllObjInSys_obj.get(obj) + "  | " + ((Address) obj).toString() + " |");
             }
             else if (obj instanceof Supplier) {
-                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + "  | " + ((Supplier) obj).getId() +  " |");
+                System.out.println("| Supplier | " + AllObjInSys_obj.get(obj) + "  | " + ((Supplier) obj).getName() +  " |");
             }
         }
     }
@@ -471,6 +471,51 @@ public class System1 {
         Static_Id+=1;
     }
 
+    public void Set_Account(String login_id, String pass, String Address, String eMail, String pNumber, boolean premium){
+        Address newAddress = new Address(Address);
+        //----------Insert to Dicts & increasing static----
+        this.AllObjInSys_id.put(Static_Id,newAddress);
+        this.AllObjInSys_obj.put(newAddress,Static_Id);
+        Static_Id+=1;
+        //-------------------------------------------------
+        Customer newCustomer = new Customer(login_id, newAddress, pNumber, eMail, null);
+        //----------Insert to Dicts & increasing static----
+        this.AllObjInSys_id.put(Static_Id,newCustomer);
+        this.AllObjInSys_obj.put(newCustomer,Static_Id);
+        Static_Id+=1;
+        //-------------------------------------------------
+        Account NewAccount = null;
+        if(premium){
+            NewAccount = new PremiumAccount(login_id, "new addressi", false, new Date(), null,
+                    100, newCustomer, null);
+            newCustomer.SetAccount(NewAccount);}
+        else{
+            NewAccount = new Account(login_id, "newAddres", false, new Date(), null,
+                    100, newCustomer, null);
+            newCustomer.SetAccount(NewAccount);}
+        //----------Insert to Dicts & increasing static----
+        AllObjInSys_obj.put(NewAccount,Static_Id);
+        AllObjInSys_id.put(Static_Id,NewAccount);
+        Static_Id++;
+        //-------------------------------------------------
+        WebUser myUser = new WebUser(login_id, pass, UserState.New, newCustomer);
+        this.Webusers.put(login_id, myUser);
+        //----------Insert to Dicts & increasing static----
+        AllObjInSys_obj.put(myUser,Static_Id);
+        AllObjInSys_id.put(Static_Id,myUser);
+        Static_Id++;
+        //-------------------------------------------------
+        ShoppingCart shop1 = new ShoppingCart(new Date(), myUser, NewAccount);
+        //----------Insert to Dicts & increasing static----
+        AllObjInSys_obj.put(shop1,Static_Id);
+        AllObjInSys_id.put(Static_Id,shop1);
+        Static_Id++;
+        //-------------------------------------------------
+        if (NewAccount != null) {
+            NewAccount.setShoppingCart(shop1);
+            myUser.setShoppingCart(shop1);
+        }
+      }
 }
 
 
