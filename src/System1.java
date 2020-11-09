@@ -350,28 +350,36 @@ public class System1 {
     }
     public void AddProduct() {
         Supplier tmpSup;
-        System.out.println("Please enter Supplier id\n");
+        System.out.println("Please enter Supplier id");
         Scanner s = new Scanner(System.in);
         String id = s.nextLine();
         if (Suppliers.get(id) == null) {
             System.out.println("Supplier's Id is unidentified");
-            System.out.println("Please enter Supplier name\n");
-            String name = s.nextLine();
-            tmpSup = new Supplier(id, name);
-            //----------insert to Dicts & increasing static----
-            AllObjInSys_obj.put(tmpSup,Static_Id);
-            AllObjInSys_id.put(Static_Id,tmpSup);
-            Static_Id++;
-            //-------------------------------------------------
-            Suppliers.put(id, tmpSup);
+            System.out.println("Would you like to create a new supplier? y/n?");
+            String ans = s.nextLine();
+            if (ans.equals("y")){
+                System.out.println("Please enter Supplier name");
+                String name = s.nextLine();
+                tmpSup = new Supplier(id, name);
+                //----------insert to Dicts & increasing static----
+                AllObjInSys_obj.put(tmpSup,Static_Id);
+                AllObjInSys_id.put(Static_Id,tmpSup);
+                Static_Id++;
+                //-------------------------------------------------
+                Suppliers.put(id, tmpSup);
+            }
+            else{
+                return;
+            }
+
         } else {
             tmpSup = Suppliers.get(id);
         }
-        System.out.println("Please enter Product name\n");
+        System.out.println("Please enter Product name");
         String productName = s.nextLine();
-        System.out.println("Please enter Product id\n");
+        System.out.println("Please enter Product id");
         String productid = s.nextLine();
-        System.out.println("Please enter Product price\n");
+        System.out.println("Please enter Product price");
         String price = s.nextLine();
         ///todo add input check
         Product newProduct = new Product(productid, productName, tmpSup, Integer.parseInt(price));

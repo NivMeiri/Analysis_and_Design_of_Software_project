@@ -1,5 +1,7 @@
+/*
 
-import java.io.*;
+*/
+/*import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,7 +18,8 @@ class JUnitTesting {
         String input = "Add WebUser Niv";
         //assertEquals(10, System.processUserInput(new Scanner(input), new PrintWriter(output)));
         assertEquals(output.toString(), "Enter your password: ");
-    }
+    }*//*
+
     void Main_check() throws FileNotFoundException {
         Main my_main=new Main();
         System.out.println(my_main);
@@ -39,7 +42,8 @@ class JUnitTesting {
 
 // optionally, reset System.in to its original
     }
-    /*
+    */
+/*
     @org.junit.jupiter.api.Test
         // check if its correct name
     void getName() throws  Exception {
@@ -72,7 +76,9 @@ class JUnitTesting {
         // check the case of empty maze. the way needs to be the same always and also the evaluated
     void test3_Regular_maze() throws  Exception {
         EmptyMazeGenerator m= new EmptyMazeGenerator();
-        Maze maze = m.generate(15/*rows*//*columns);
+        Maze maze = m.generate(15/*rows*//*
+*/
+/*columns);
         Position end_pos1 = new Position(14, 0);
         maze.Set_end(end_pos1);
         BestFirstSearch b=new BestFirstSearch();
@@ -83,5 +89,7 @@ class JUnitTesting {
         assertNotNull(x.getSolutionPath().size(),"suppose to return null");
     }
 
-*/
+*//*
+
 }
+*/
