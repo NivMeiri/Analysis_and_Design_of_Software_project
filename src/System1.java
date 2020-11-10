@@ -466,7 +466,7 @@ public class System1 {
             System.out.println(obj.toString());
         }
         else{
-            System.out.println("The Object is not exist");
+            System.out.println("The Object does not exist");
         }
     }
 

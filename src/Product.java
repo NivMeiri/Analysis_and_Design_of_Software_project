@@ -265,7 +265,7 @@ public class Product
             "name" + ":" + getName()+ "]";
     String Conn2Obj =
             "\nsupplier = "+ supplier.getName()
-            +"\nPremiumAccount = "+ premiumAccount.getID();
+            +(premiumAccount == null ? "" : "\nPremiumAccount = "+ premiumAccount.getID());
     String Line2Obj = "";
     for(LineItem li: lineItems){
       Line2Obj += "\nLineItem: "+li.getProduct().getName();

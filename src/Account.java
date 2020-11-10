@@ -394,7 +394,7 @@ public class Account
             "is_closed" + ":" + getIs_closed()+ ", " +
             "balance" + ":" + getBalance()+ "]" +
             "\n" + "open" + "=" + open.toString() +
-            "\n" + "closed" + "=" + closed.toString();
+            "\n" +  (closed == null ? "" : "closed" + "=" +closed.toString());
     String Conn2Obj = "\nCustomer = "+customer.getId() + ",\nShoppingCart = "+shoppingCart.getCretaed();
     String Orders2Obj = "";
     String Pay2Obj = "";
