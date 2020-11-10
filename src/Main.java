@@ -40,7 +40,7 @@ public class Main {
                     }
                 case 2:
                     if (First_Command.equals("ShowObjectId")) {
-                        s1.Show_object_id(Integer.parseInt(Second_Command));
+                        s1.Show_object_id((Second_Command));
                         break;
                     }
 

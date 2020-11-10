@@ -197,6 +197,7 @@ public class System1 {
             String item = sciny.nextLine();
             Product UserItem = null;
             int num;
+            int Amount_flag=0;
             while (UserItem == null) {
                 for (int i = 0; i < premiumUser.numberOfProducts(); i++) {
                     if (premiumUser.getProducts().get(i).getName().equals(item)) {
@@ -206,10 +207,10 @@ public class System1 {
                 }
                 if (UserItem == null) {
                     System.out.println("There is no product with this name!");
-                    return;
+                    Amount_flag=1;
+                    break;
                 }
             }
-            int Amount_flag=0;
             while (Amount_flag==0) {
                 System.out.println("How many units do you want?");
                 num = Integer.parseInt(sciny.nextLine());
@@ -340,7 +341,7 @@ public class System1 {
                     System.out.println("Shipped in " + o.getShipped() + "\n");
                     System.out.println("Address " + o.getShip_to() + "\n");
                     System.out.println("Status " + o.getStatus() + "\n");
-                    System.out.println("Total " + o.getTotal() + "\n");
+                    System.out.println("Total cost " + o.getTotal() + "\n");
                 }
                 else{
                     System.out.println("no orders to display");
@@ -419,9 +420,7 @@ public class System1 {
     public void Show_all_Objects() {
         System.out.println("| Object   | id | name  |");
         Set<Object> objArr = AllObjInSys_obj.keySet();
-        int size=AllObjInSys_id.size();
-        for (int i=0;i<size;i++){
-            Object obj=AllObjInSys_id.get(i+1);
+        for (Object obj: objArr){
             if (obj instanceof Product) {
                 System.out.println("| Product  | " + AllObjInSys_obj.get(obj) + "  | " + ((Product) obj).getName() + " |");
             } else if (obj instanceof Order) {
@@ -453,10 +452,22 @@ public class System1 {
         }
     }
 
-    public void Show_object_id(int id) {
-        Object obj = AllObjInSys_id.get(id);
-        System.out.println(obj.getClass().getName() + " ID: " + id);
-        System.out.println(obj.toString());
+    public void Show_object_id(String id) {
+        int x=0;
+        try {
+            x=Integer.parseInt(id);
+        }
+        catch (Exception e){
+            System.out.println("insert int to input");
+        }
+        Object obj = AllObjInSys_id.get(x);
+        if(obj!=null) {
+            System.out.println(obj.getClass().getName() + " ID: " + x);
+            System.out.println(obj.toString());
+        }
+        else{
+            System.out.println("The Object is not exist");
+        }
     }
 
     public void Set_Supplier(String id, String name) {
