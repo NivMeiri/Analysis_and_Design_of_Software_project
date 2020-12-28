@@ -26,7 +26,7 @@ public void removeChild(Child c){
     this.currentUsing.remove(c);
 }
 public boolean canGoOn(E_ticket e,Child c){
-    if(c.age>=this.minAge && c.Height>=minHeight && c.Weight>=minWeight   )
+    if(c.age>=this.minAge && c.Height>=minHeight && c.Weight>=minWeight)
         return true;
     else
         return false;

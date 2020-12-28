@@ -8,9 +8,9 @@ public class Guardian {
     String id;
     int Password;
     public void approveExtreme(ArrayList<Device> Device_arr) {
+        System.out.println("This is the list of the extreme device that you choose:");
         for (Device d : Device_arr) {
-            System.out.println("Do you want to add this?");
-            // TODO: 26/12/2020  add input from user
+            System.out.println(d.name);
         }
     }
     public void addChild(Child c,int pass){
@@ -19,7 +19,6 @@ public class Guardian {
         }
     public void deleteChild(Child c){
         childDict.remove(c);
-        System.out.println("Child deleted successfully");
     }
     public void  CheckCreditCard(int c,double money, int limit) throws Exception{
         TimeUnit.SECONDS.sleep(2);

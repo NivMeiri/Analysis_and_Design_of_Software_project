@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class GuardianController {
     int Pass = 0;
@@ -19,8 +20,16 @@ public class GuardianController {
     public void deleteChild(Child c, Guardian g) {
         g.deleteChild(c);
         childControll.deleteChild(c);
-        Main.systemObjects.remove(c);
 
+    }
+    public void deleteGuardian(Guardian g){
+        for (Child c: g.childDict.keySet()){
+            childControll.deleteChild(c);
+        }
+        g.childDict=null;
+        Guradian_list.remove(g);
+        Main.systemObjects.remove(g.a);
+        Main.systemObjects.remove(g);
     }
 
     public void checkCCNum(int ccnum,double money,int limit, Guardian g) throws Exception {
@@ -32,6 +41,7 @@ public class GuardianController {
         g.Password=pass;
         g.id=id;
         this.Guradian_list.add(g);
+        Main.systemObjects.add(g);
         return g;
     }
     public Guardian CheckGuardDetails(String id, int pass) {
@@ -51,6 +61,7 @@ public class GuardianController {
         System.out.println(" the id is not exist");
         return null;
     }
+
     public  void AddEntry(Guardian g,Child c,Device d){
         childControll.AddEntry(c,d);
         boolean x=g.a.hasEnoughMoney(100);

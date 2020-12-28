@@ -14,7 +14,7 @@ public class ChildController {
         c.name=name;
 
         Child_list.add(c);
-        System.out.println(Child_list);
+        //System.out.println(Child_list);
         Main.systemObjects.add(c);
         return c;
     }
@@ -30,6 +30,7 @@ public class ChildController {
         this.Child_list.remove(c);
         Main.systemObjects.remove(c.e);
         Main.systemObjects.remove(c.b);
+        Main.systemObjects.remove(c);
 
     }
 
