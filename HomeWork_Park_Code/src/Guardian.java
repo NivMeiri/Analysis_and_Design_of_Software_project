@@ -33,13 +33,15 @@ public class Guardian {
         this.a.limit=limit;
         Main.systemObjects.add(this.a);
     }
-    public Child findChild(int id){
+    public Child findChild(String name){
         for (Child c: this.childDict.keySet()){
-            if (c.ID==id){
+            if (c.name.equals(name)){
                 return c;
             }
         }
-        System.out.println("The child is not exist. Try other id");
         return null;
+    }
+    public int getTotal(){
+        return this.a.getTotal();
     }
 }

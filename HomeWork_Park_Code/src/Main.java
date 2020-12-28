@@ -18,7 +18,7 @@ public class Main {
         GuardCont.childControll = childCont;
         Device D1 = new Device(true, 1.4, 0, 12, "Mamba Ride");
         Device D2 = new Device(false, 0, 0, 0, "Giant Wheel");
-        Device D3 = new Device(true, 0, 0, 8, "Carrousel");
+        Device D3 = new Device(false, 0, 0, 8, "Carrousel");
         systemObjects.add(D1);
         systemObjects.add(D2);
         systemObjects.add(D3);
@@ -37,7 +37,7 @@ public class Main {
             String choice = scan.nextLine();
             switch (choice) {
                 case "1": {
-                    System.out.println("welcome back back , please enter your id  [str]:");
+                    System.out.println("welcome back , please enter your id  [str]:");
                     String id = scan.nextLine();
                     System.out.println("Please enter your  Password   [int]:");
                     String pass = scan.nextLine();
@@ -49,7 +49,7 @@ public class Main {
                     System.out.println("You are in!!");
                     boolean flag2 = true;
                     while (flag2 == true) {
-                        System.out.println("\nPlease enter a number between 1-6 : \n" +
+                        System.out.println("\nPlease enter a number between 1-4 : \n" +
                                 "enter 1 : Register child \n" +
                                 "enter 2:  Manage ticket\n" +
                                 "enter 3:  Exit park\n" +
@@ -60,6 +60,11 @@ public class Main {
                                 System.out.println("Register child");
                                 System.out.println("Please enter name  [string]:");
                                 String name = scan.nextLine();
+                                Child child1 = guardian.findChild(name);
+                                if (child1 != null) {
+                                    System.out.println("This child already exist in the park");
+                                    break;
+                                }
                                 System.out.println("Please enter Age  [int]:");
                                 String AgeStr = scan.nextLine();
                                 int Age = Integer.parseInt(AgeStr);
@@ -75,11 +80,11 @@ public class Main {
                                 GuardCont.addChild(Age, name, Weight, Height, time, guardian);
                                 break;
                             case "2":
-                                System.out.println("what is the id of the child that you want's to edit ride:  [Str]");
-                                String idChildStr = scan.nextLine();
-                                int idChild = Integer.parseInt(idChildStr);
-                                Child child = guardian.findChild(idChild);
+                                System.out.println("What is the name of the child that you want's to edit ride:  [Str]");
+                                String ChildStr = scan.nextLine();
+                                Child child = guardian.findChild(ChildStr);
                                 if (child == null) {
+                                    System.out.println("Invalid name");
                                     break;
                                 }
                                 boolean flag3 = true;
@@ -88,9 +93,8 @@ public class Main {
                                             "enter 1 : Add Entries \n" +
                                             "enter 2:  Remove Entry\n" +
                                             "enter 3:  Show ticket\n" +
-                                            "enter 4:  Exit child from the park\n" +
-                                            "enter 5:  Return to the previous menu\n");
-                                    choice = scan.nextLine();
+                                            "enter 4:  Return to the previous menu\n");
+                                    choice = scan.nextLine().toLowerCase();
                                     switch (choice) {
                                         case "1": {
                                             AddEntry(guardian, child);
@@ -104,28 +108,36 @@ public class Main {
                                             child.showTicket();
                                             break;
                                         }
-                                        case "4": {
-                                            ChildExitPark(guardian, child);
-                                            System.out.println("The child was removed!");
-                                            flag3=false;
-                                            break;
-                                        }
-                                        case "5":
+                                        case "4":
                                             flag3 = false;
+                                            break;
+                                        case "exit":
+                                            System.out.println("goodbye!");
+                                            deleteAllObject();
+                                            flag = false;
+                                            flag2=false;
+                                            flag3=false;
                                             break;
                                     }
                                 }
                                 break;
                             case "3":
-                                GuardExitPark(guardian);
-                                System.out.println("You left the park successfully. goodbye!");
-                                flag2 = false;
+                                System.out.println("what is the id of the child that you want's to exit from the park: [Str]");
+                                String ChildStr1 = scan.nextLine();
+                                Child c = guardian.findChild(ChildStr1);
+                                if (c == null) {
+                                    break;
+                                }
+                                ChildExitPark(guardian, c);
+                                System.out.println("The child was removed!");
                                 break;
+                            case "exit":
                             case "4":
                                 System.out.println("goodbye!");
                                 deleteAllObject();
                                 flag = false;
                                 break;
+
                             default:
                                 System.out.println("you need to insert valid number!");
                         }
@@ -136,6 +148,15 @@ public class Main {
                     System.out.println("This is the register process");
                     System.out.println("Please enter your id:   [string]");
                     String id = scan.nextLine();
+                    int flag4=0;
+                    for (Guardian g:GuardCont.Guradian_list){
+                        if (g.id.equals(id)) {
+                            System.out.println("This id already exist");
+                            flag4=1;
+                        }
+                    }
+                    if (flag4==1)
+                        break;
                     System.out.println("Please enter Password       [int]");
                     String pass1 = scan.nextLine();
                     int pass = Integer.parseInt(pass1);
@@ -151,6 +172,7 @@ public class Main {
                     GuardCont.checkCCNum(ccnum, Moneyleft, lim, g);
                     break;
                 }
+                case "exit":
                 case "3":
                     System.out.println("goodbye!");
                     deleteAllObject();
@@ -178,7 +200,7 @@ public class Main {
             }
             if (device == null) {
                 System.out.println("invalid device");
-                break;
+                return;
             }
             if (device.isExtreme) {
                 extreme.add(device);
@@ -209,6 +231,11 @@ public class Main {
 
     public static void DeleteEntry(Guardian g, Child c){
         Entry toDel=null;
+
+        if (c.e.entries.size()==0){
+            System.out.println("There is no entries to remove");
+            return;
+        }
         System.out.println("Please enter the name of the device you want to remove:");
         for (Entry e: c.e.entries){
             System.out.println("device :" + e.d.name);
@@ -230,8 +257,10 @@ public class Main {
         GuardCont.deleteChild(child,guardian);
     }
     public static void GuardExitPark(Guardian guardian){
-        GuardCont.deleteGuardian(guardian);
+        System.out.println("Credit Card was charged with: "+guardian.getTotal()+"NIS");
+
     }
+
     public static void deleteAllObject(){
         systemObjects=null;
         GuardCont=null;
