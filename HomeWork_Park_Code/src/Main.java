@@ -34,7 +34,7 @@ public class Main {
                     "enter 1 : Guardian Sign in to account that already exist \n" +
                     "enter 2:  Register new Guardian to the app  \n" +
                     "enter 3:  Exit\n");
-            String choice = scan.nextLine();
+            String choice = scan.nextLine().toLowerCase();
             switch (choice) {
                 case "1": {
                     System.out.println("welcome back , please enter your id  [str]:");
@@ -55,7 +55,17 @@ public class Main {
                                 "enter 3:  Exit park\n" +
                                 "enter 4:  Exit\n");
                         choice = scan.nextLine();
+                        String[] splited = choice.split("\\s+");
+                        int Length = splited.length;
+                        String ChildStr="";
+                        if(Length>=1) {
+                            choice = splited[0].toLowerCase();
+                        }
+                        if(Length==2) {
+                            ChildStr = splited[1];
+                        }
                         switch (choice) {
+                            case "register":
                             case "1":
                                 System.out.println("Register child");
                                 System.out.println("Please enter name  [string]:");
@@ -79,9 +89,11 @@ public class Main {
                                 int time = Integer.parseInt(timeStr);
                                 GuardCont.addChild(Age, name, Weight, Height, time, guardian);
                                 break;
+
                             case "2":
                                 System.out.println("What is the name of the child that you want's to edit ride:  [Str]");
-                                String ChildStr = scan.nextLine();
+                                ChildStr = scan.nextLine();
+                            case "manageticket":
                                 Child child = guardian.findChild(ChildStr);
                                 if (child == null) {
                                     System.out.println("Invalid name");
@@ -90,16 +102,37 @@ public class Main {
                                 boolean flag3 = true;
                                 while (flag3 == true) {
                                     System.out.println("\nWhat do you want to do? : \n" +
-                                            "enter 1 : Add Entries \n" +
-                                            "enter 2:  Remove Entry\n" +
+                                            "enter 1 : Add Ride \n" +
+                                            "enter 2:  Remove Ride  \n" +
                                             "enter 3:  Show ticket\n" +
                                             "enter 4:  Return to the previous menu\n");
-                                    choice = scan.nextLine().toLowerCase();
+                                    choice = scan.nextLine();
+                                    splited = choice.split("\\s+");
+                                    String device="";
+                                    Length = splited.length;
+                                    ChildStr="";
+                                    if(Length>=1) {
+                                        choice = splited[0].toLowerCase();
+                                    }
+                                    if(Length>=2) {
+                                        device = splited[1];
+                                    }
+                                    if(Length==3) {
+                                        device+=" "+splited[2];
+                                    }
+
                                     switch (choice) {
+                                        case "add":
+                                            AddRide(guardian, child,device);
+                                            break;
                                         case "1": {
                                             AddEntry(guardian, child);
                                             break;
                                         }
+                                        case "remove":
+                                            RemoveEntry(guardian, child,device);
+                                            break;
+
                                         case "2": {
                                             DeleteEntry(guardian, child);
                                             break;
@@ -109,7 +142,7 @@ public class Main {
                                             break;
                                         }
                                         case "4":
-                                            flag3 = false;
+                                            flag3=false;
                                             break;
                                         case "exit":
                                             System.out.println("goodbye!");
@@ -117,10 +150,11 @@ public class Main {
                                             flag = false;
                                             flag2=false;
                                             flag3=false;
-                                            break;
+                                            System.exit(0) ;
                                     }
                                 }
                                 break;
+                            case "exitpark":
                             case "3":
                                 System.out.println("what is the id of the child that you want's to exit from the park: [Str]");
                                 String ChildStr1 = scan.nextLine();
@@ -136,7 +170,8 @@ public class Main {
                                 System.out.println("goodbye!");
                                 deleteAllObject();
                                 flag = false;
-                                break;
+                                System.exit(0) ;
+
 
                             default:
                                 System.out.println("you need to insert valid number!");
@@ -177,10 +212,62 @@ public class Main {
                     System.out.println("goodbye!");
                     deleteAllObject();
                     flag = false;
-                    break;
+                    System.exit(0) ;
+
             }
         }
     }
+    public  static void AddRide( Guardian g, Child c,String d2){
+
+        boolean flag = true;
+        List<Device> extreme = new LinkedList<>();
+        while (flag) {
+            String device1 = d2;
+            Device device = null;
+            for (Device d : DeviceList) {
+                if (d.name.equals(device1))
+                    device = d;
+            }
+            if (device == null) {
+                System.out.println("invalid device");
+                return;
+            }
+            if (device.isExtreme) {
+                extreme.add(device);
+            } else
+                GuardCont.AddEntry(g, c, device);
+            System.out.println("To you want to add more entries? yes/no");
+            String yes_no = scan.nextLine().toLowerCase();
+            if (yes_no.equals("no"))
+                flag = false;
+        }
+        if (extreme.size() > 0) {
+            System.out.println("This is the list of the extreme device that you choose:");
+            for (Device d : extreme) {
+                System.out.println(d.name);
+            }
+            System.out.println("Do you want to approve the extreme devices ? yes/no");
+            String yes_no = scan.nextLine().toLowerCase();
+            if (yes_no.equals("no"))
+                System.out.println("you didnt approve, addEntry for extreme devices cancelled");
+            else{
+                for (Device d : extreme) {
+                    GuardCont.AddEntry(g, c, d);
+                }
+            }
+        }
+        System.out.println("The entries was added successfully!");
+    }
+
+
+
+
+
+
+
+
+
+
 
     public static void AddEntry(Guardian g, Child c) {
         System.out.println("this is the list of the relevant devices for this child");
@@ -228,6 +315,28 @@ public class Main {
         }
         System.out.println("The entries was added successfully!");
     }
+
+
+    public static void RemoveEntry(Guardian g, Child c ,String device){
+        Entry toDel=null;
+
+        if (c.e.entries.size()==0){
+            System.out.println("There is no entries to remove");
+            return;
+        }
+        for (Entry e: c.e.entries){
+            if (e.d.name.equals(device))
+                toDel=e;
+        }
+        if (toDel==null)
+            System.out.println("invalide device name");
+        else {
+            GuardCont.DeleteEntry(toDel, c);
+            System.out.println("The entry removed successfully");
+        }
+    }
+
+
 
     public static void DeleteEntry(Guardian g, Child c){
         Entry toDel=null;
