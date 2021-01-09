@@ -115,10 +115,10 @@ public class Main {
                                         choice = splited[0].toLowerCase();
                                     }
                                     if(Length>=2) {
-                                        device = splited[1];
+                                        device = splited[1].toLowerCase();
                                     }
                                     if(Length==3) {
-                                        device+=" "+splited[2];
+                                        device+=" "+splited[2].toLowerCase();
                                     }
 
                                     switch (choice) {
@@ -225,7 +225,7 @@ public class Main {
             String device1 = d2;
             Device device = null;
             for (Device d : DeviceList) {
-                if (d.name.equals(device1))
+                if ((d.name.toLowerCase()).equals(device1))
                     device = d;
             }
             if (device == null) {
@@ -236,7 +236,7 @@ public class Main {
                 extreme.add(device);
             } else
                 GuardCont.AddEntry(g, c, device);
-            System.out.println("To you want to add more entries? yes/no");
+            System.out.println("Do you want to add more entries? yes/no");
             String yes_no = scan.nextLine().toLowerCase();
             if (yes_no.equals("no"))
                 flag = false;
@@ -282,7 +282,7 @@ public class Main {
             String device1 = scan.nextLine();
             Device device = null;
             for (Device d : DeviceList) {
-                if (d.name.equals(device1))
+                if ((d.name.toLowerCase()).equals(device1.toLowerCase()))
                     device = d;
             }
             if (device == null) {
@@ -325,7 +325,7 @@ public class Main {
             return;
         }
         for (Entry e: c.e.entries){
-            if (e.d.name.equals(device))
+            if (e.d.name.toLowerCase().equals(device))
                 toDel=e;
         }
         if (toDel==null)
@@ -349,13 +349,13 @@ public class Main {
         for (Entry e: c.e.entries){
             System.out.println("device :" + e.d.name);
         }
-        String device=scan.nextLine();
+        String device=scan.nextLine().toLowerCase();
         for (Entry e: c.e.entries){
-            if (e.d.name.equals(device))
+            if (e.d.name.toLowerCase().equals(device))
                 toDel=e;
         }
         if (toDel==null)
-            System.out.println("invalide name");
+            System.out.println("invalid name");
         else {
             GuardCont.DeleteEntry(toDel, c);
             System.out.println("The entry removed successfully");
