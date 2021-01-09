@@ -1,5 +1,6 @@
 public class AbstractOp {
-    public void ChangeTemp(){;}
+    AirConditioner airco;
+    public void ChangeTemp(){}
     public void Entry(String stri){
         System.out.println("OPERATION-"+stri);
     }

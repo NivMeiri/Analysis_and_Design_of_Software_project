@@ -3,9 +3,9 @@ public class WaitState extends  AbstractState {
     public  WaitState(AirConditioner airco){
         this.airco=airco;
     }
-    public void entry(){
+    public void Entry(){
         System.out.println("WAITING 30 SECONDS");
         airco.OnOffState=airco.OnState;
-        airco.OnOffState.entry();
+        airco.OnOffState.Entry();
     }
 }

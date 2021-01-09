@@ -14,13 +14,12 @@ public class OnState extends  AbstractState{
 
     public OnState(AirConditioner airco){
         this.airConditioner=airco;
-
-        this.coolingop=new CoolingOp();
-        this.heatingop=new HeatingOp();
-        this.fanningop=new FanningOp();
-        this.offState=new OffState();
-        this.coolState=new CoolState();
-        this.heatState=new HeatState();
+        this.coolingop=new CoolingOp(airco);
+        this.heatingop=new HeatingOp(airco);
+        this.fanningop=new FanningOp(airco);
+        this.offState=new OffState(airco);
+        this.coolState=new CoolState(airco);
+        this.heatState=new HeatState(airco);
 
     }
     public  void SetState(AbstractState state){
@@ -34,14 +33,14 @@ public class OnState extends  AbstractState{
     }
     public void off(){
         this.airConditioner.OnOffState=this.offState;
-        System.out.println("OFF");
+        this.airConditioner.OnOffState.Entry();
     }
-    private void Entry(){
+    public void Entry(){
         System.out.println("ON");
+        this.CurrentState=this.coolState;
+        this.CurrentState.Entry();
         this.CurrentOp=this.fanningop;
         this.CurrentOp.Entry();
-        this.CurrentState=this.coolState;
-        this.CurrentState.entry();
 
     }
     public int getRoomtemp(){
