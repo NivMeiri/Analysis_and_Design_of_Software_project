@@ -4,7 +4,7 @@ public class FanningOp extends  AbstractOp{
         this.airco=airco;
     }
     public void Entry(){
-        this.Entry("FANNING(120 SECONDS AT LEAST)");
+        this.Entry("FANNING (120 SECONDS AT LEAST)");
     }
     public void ChangeTemp(){
         if (this.airco.OnState.CurrentState instanceof HeatState && this.airco.Room_temp< this.airco.Chosen_temp-2){
