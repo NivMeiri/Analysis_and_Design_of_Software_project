@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Work5:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Work5_jar</output-path>
+    <root id="archive" name="Work5.jar">
+      <element id="module-output" name="Work5" />
+    </root>
+  </artifact>
+</component>
